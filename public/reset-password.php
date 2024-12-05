@@ -76,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 
-ob_end_flush();
 ?>
 
 <!DOCTYPE html>
@@ -125,3 +124,7 @@ ob_end_flush();
   </div>
 </body>
 </html>
+<?
+  include_once("./footer.php");
+  ob_end_flush();
+?>

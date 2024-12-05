@@ -9,7 +9,6 @@ isAuthenticated();
 
 // Fetch active auctions
 $auctions = getActiveAuctions();
-ob_end_flush();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,3 +67,7 @@ ob_end_flush();
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<?
+  include_once("./footer.php");
+  ob_end_flush();
+?>

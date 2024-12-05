@@ -146,6 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 </html>
 
-<?php
-ob_end_flush(); // Flush output buffer
+<?
+  include_once("./footer.php");
+  ob_end_flush();
 ?>

@@ -41,3 +41,7 @@ isAuthenticated();
   </div>
 </body>
 </html>
+<?
+  include_once("./footer.php");
+  ob_end_flush();
+?>

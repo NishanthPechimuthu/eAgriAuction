@@ -332,4 +332,7 @@ $auction_end_date = date("Y-m-d H:i:s", strtotime($auction['auctionEndDate']));
 </div>
 </body>
 </html>
-<?php ob_end_flush(); ?>
+<?
+  include_once("./footer.php");
+  ob_end_flush();
+?>

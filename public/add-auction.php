@@ -84,8 +84,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
-ob_end_flush(); // Flush the output buffer
 ?>
 
 <!DOCTYPE html>
@@ -274,3 +272,7 @@ ob_end_flush(); // Flush the output buffer
   </script>
 </body>
 </html>
+<?
+  include_once("./footer.php");
+  ob_end_flush();
+?>

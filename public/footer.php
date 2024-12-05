@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <? include_once("../assets/link.html"); ?>
+</head>
+<body>
+<div class="d-flex flex-column min-vh-100">
+  <!-- Footer -->
+  <footer class="container-fluid bg-dark text-white pt-5 pb-4 px-5">
+    <div class=" text-left text-md-left">
+      <div class="row justify-content-start">
+        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h5 class="text-uppercase mb-4 font-weight-bold text-success">e-Agri Auction</h5>
+          <p>E-Agri Auction is an online platform that connects farmers directly with wholesalers through e-auctions. This helps farmers get better prices for their produce by bypassing middlemen, while wholesalers can easily access fresh, quality products.</p>
+        </div>
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h5 class="text-uppercase mb-4 font-weight-bold text-success">Products</h5>
+          <p><a href="./auctions.php" class="text-white" style="text-decoration: none;">Auctions</a></p>
+          <p><a href="./add-auction.php" class="text-white" style="text-decoration: none;">Add Auctions</a></p>
+          <p><a href="./manage-auction.php" class="text-white" style="text-decoration: none;">Manage Auction</a></p>
+        </div>
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h5 class="text-uppercase mb-4 font-weight-bold text-success">Useful links</h5>
+          <p><a href="./profile.php" class="text-white" style="text-decoration: none;">Your Account</a></p>
+          <p><a href="./revisited-auctions.php" class="text-white" style="text-decoration: none;">Your Participated Auctions</a></p>
+          <p><a href="#" class="text-white" style="text-decoration: none;">Help</a></p>
+        </div>
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h5 class="text-uppercase mb-4 font-weight-bold text-success">Contact</h5>
+          <p><i class="fas fa-home mr-3"></i>&nbsp;&nbsp;Tiruppur, Tamil Nadu, India - 642205</p>
+          <p><i class="fas fa-envelope mr-3"></i>&nbsp;&nbsp;nishanthpechimuthu@gmail.com</p>
+          <p><i class="fas fa-phone mr-3"></i>&nbsp;&nbsp;+91 8015864344</p>
+        </div>
+      </div>
+      <hr class="mb-4">
+      <div class="row justify-content-start align-items-center">
+        <div class="col-md-7 col-lg-8">
+          <p>Copyright &copy; 2024 - 2025 All rights reserved by:
+            <a href="mailto:nishanthpechimuthu@gmail.com" style="text-decoration: none;">
+              <strong class="text-success">Nishanth Pechimuthu</strong>
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

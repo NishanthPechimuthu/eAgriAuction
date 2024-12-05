@@ -75,3 +75,7 @@ $auctions = getAuctionsParticipate($user_id);
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<?
+  include_once("./footer.php");
+  ob_end_flush();
+?>
