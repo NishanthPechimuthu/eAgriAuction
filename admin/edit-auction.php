@@ -5,14 +5,6 @@ include("header.php");
 include("navbar.php");
 isAuthenticated();
 
-// Check if the user is authenticated via session
-function isAuthenticated() {
-    if (!isset($_SESSION['user_id'])) {
-        header("Location: login.php");
-        exit();
-    }
-}
-
 // Get auction ID from query parameter
 $auction_id = $_GET['id'] ?? null;
 if (!$auction_id) {

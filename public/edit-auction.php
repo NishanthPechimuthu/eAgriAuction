@@ -190,7 +190,6 @@ error_reporting(E_ALL);
             <select id="status" name="status" class="form-control" required>
               <option value="activate" <?=$auction['auctionStatus'] === 'activate' ? 'selected' : '' ?>>Activate</option>
               <option value="deactivate" <?=$auction['auctionStatus'] === 'deactivate' ? 'selected' : '' ?>>Deactivate</option>
-              <option value="suspend" <?=$auction['auctionStatus'] === 'suspend' ? 'selected' : '' ?>>Suspend</option>
             </select>
           </div>
 

@@ -2,26 +2,6 @@
 session_start();
 include("header.php");
 include("navbar.php");
-isAuthenticated();
-
-// Check if the user is authenticated using session
-function isAuthenticated() {
-    if (!isset($_SESSION['user_id'])) {
-        header("Location: login.php");
-        exit();
-    }
-}
-
-// Check if user role is admin
-function checkAdminRole() {
-    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-        header("Location: ../public/index.php");
-        exit(); 
-    }
-}
-
-checkAdminRole();
-
 // Retrieve counts for overview
 $activeAuctions = count(getActiveAuctions());
 $totalUsers = count(getAllUsers());

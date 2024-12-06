@@ -162,7 +162,7 @@ function getUsersAuctions() {
     }
 
     try {
-        $sql = "SELECT * FROM auctions WHERE auctionCreatedBy = :user_id";
+        $sql = "SELECT * FROM auctions WHERE auctionCreatedBy = :user_id AND auctionStatus <> 'suspend'";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
@@ -176,7 +176,7 @@ function getUsersAuctions() {
 // Fetch all users
 function getAllUsers() {
     global $pdo;
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE userRole = 'user'");
+    $stmt = $pdo->prepare("SELECT * FROM users ");
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -256,12 +256,8 @@ function deleteAuction($auction_id) {
     $auction = $stmt->fetch();
 
     if ($auction) {
-        // First, delete all bids related to the auction
-        $deleteBidsStmt = $pdo->prepare("DELETE FROM bids WHERE bidAuctionId = :auctionId");
-        $deleteBidsStmt->execute(['auctionId' => $auction_id]);
-
         // Now, delete the auction itself
-        $deleteAuctionStmt = $pdo->prepare("DELETE FROM auctions WHERE auctionId = :auctionId");
+        $deleteAuctionStmt = $pdo->prepare("UPDATE auctions SET auctionStatus = 'suspend' WHERE auctionId = :auctionId");
         $deleteAuctionStmt->execute(['auctionId' => $auction_id]);
 
         // Optionally, check if deletion was successful

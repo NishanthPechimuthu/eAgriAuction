@@ -2,17 +2,6 @@
 session_start();
 include '../includes/auth.php';
 
-// Check if user is already logged in via session
-if (isset($_SESSION["user_id"]) && $_SESSION["user_id"] != NULL) {
-    if ($_SESSION["role"] === "admin") { // Assuming 'admin' is the role for admin users
-        header("Location: dashboard.php");
-        exit();
-    } else {
-        header("Location: ../public/auctions.php");
-        exit();
-    }
-}
-
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';

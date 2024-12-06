@@ -44,6 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       text-align: center;
       vertical-align: middle;
     }
+    .dataTables_wrapper {
+      overflow-x: auto;
+    }
   </style>
 </head>
 <body>

@@ -2,12 +2,6 @@
 ob_start();
 session_start(); // Start session at the top of the file
 
-// Check if the user is an admin
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: ../public/index.php");
-    exit(); // Always follow header with exit()
-}
-
 // Handle logout request
 if (isset($_POST['logout'])) {
     logout();
