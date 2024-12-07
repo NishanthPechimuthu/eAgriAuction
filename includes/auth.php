@@ -21,23 +21,41 @@ if (!function_exists('isAuthenticated')) {
 // Login function
 function login($username, $password) {
     global $pdo;
-    $stmt = $pdo->prepare("SELECT userId, userName, userRole, userEmail, userProfileImg, userPassword FROM users WHERE userName = :username");
-    $stmt->execute(['username' => $username]);
+    $status = "suspend";
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE userName = :username AND userStatus <> :status");
+    $stmt->execute(['username' => $username,'status' => $status]);
     $user = $stmt->fetch();
 
     // Log user data for debugging
     error_log("User Data: " . print_r($user, true));
-
-    // Verify password
-    if ($user && password_verify($password, $user['userPassword'])) {
-        // Set session and cookies for persistence
-        $_SESSION['userId'] = $user['userId'];
-        $_SESSION['userName'] = $user['userName'];
-        $_SESSION['userRole'] = $user['userRole'];
-        $_SESSION['userEmail'] = $user['userEmail'];
-        $_SESSION['userProfileImg'] = $user['userProfileImg'];
-        return true;
+      if ($user && password_verify($password, $user['userPassword'])) {
+          // Set session and cookies for persistence
+    if ($user["userStatus"] == 'activate') {
+          $_SESSION['userId'] = $user['userId'];
+          $_SESSION['userName'] = $user['userName'];
+          $_SESSION['userRole'] = $user['userRole'];
+          $_SESSION['userEmail'] = $user['userEmail'];
+          $_SESSION['userProfileImg'] = $user['userProfileImg'];
+          return true;
+    } else {
+      echo '
+        <p class="alert alert-warning alert-dismissible fade show d-flex align-items-center" 
+           role="alert" data-bs-dismiss="alert" 
+           aria-label="Close" 
+           style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+           your account not activate</p>
+      ';
     }
+      }else {
+        echo '
+        <p class="alert alert-warning alert-dismissible fade show d-flex align-items-center"
+           role="alert"  data-bs-dismiss="alert"
+                  aria-label="Close"
+           style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+          Invalid credentials.
+        </p>
+    ';
+      }
     return false;
 }
 
@@ -83,6 +101,7 @@ function register($username, $email, $password) {
 
     try {
         // Check if the username already exists
+        $status="suspend";
         $stmt = $pdo->prepare("SELECT * FROM users WHERE userName = :username");
         $stmt->execute(['username' => $username]);
 
@@ -99,8 +118,9 @@ function register($username, $email, $password) {
         }
 
         // Check if the email already exists
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE userEmail = :email");
-        $stmt->execute(['email' => $email]);
+        $status="suspend";
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE userEmail = :email AND userStatus <> :status");
+        $stmt->execute(['email' => $email,'status' => $status]);
 
         if ($stmt->rowCount() > 0) {
             echo '
@@ -160,12 +180,31 @@ function register($username, $email, $password) {
         exit();
     }
 
-function deleteUser($user){
+function deleteUser($user, $email){
     global $pdo;
-    // Check if the username or email already exists
-    // $stmt = $pdo->prepare("DELETE FROM users WHERE id = :user");
-    $stmt = $pdo->prepare("UPDATE users SET userStatus='suspend' id = :user");
-    $stmt->execute(['user' => $user]);
+    $status = "suspend";
+    $expemail = "EXP:" . $email;
+
+    try {
+        $stmt = $pdo->prepare("UPDATE users SET userStatus = :status, userEmail = :expemail WHERE userId = :user");
+        $stmt->execute(['user' => $user, 'status' => $status, 'expemail' => $expemail]);
+    } catch (PDOException $e) {
+        // Handle the error (could log it or show a message depending on your needs)
+        echo "Error: " . $e->getMessage();
     }
-    ob_end_flush();
+}
+
+function suspendUser($user){
+    global $pdo;
+    $status = "deactivate";
+
+    try {
+        $stmt = $pdo->prepare("UPDATE users SET userStatus = :status WHERE userId = :user");
+        $stmt->execute(['user' => $user, 'status' => $status]);
+        return true;
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+    
 ?>

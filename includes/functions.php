@@ -176,8 +176,8 @@ function getUsersAuctions() {
 // Fetch all users
 function getAllUsers() {
     global $pdo;
-    $stmt = $pdo->prepare("SELECT * FROM users ");
-    $stmt->execute();
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE userStatus <> :sStatus AND userStatus = :aStatus");
+    $stmt->execute(['sStatus' => 'suspend','aStatus' => 'activate']);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 

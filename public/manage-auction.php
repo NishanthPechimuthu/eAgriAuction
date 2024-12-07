@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container mt-5">
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fas fa-cogs me-1"></i> Users Table
+                <i class="fas fa-cogs me-1"></i> Manage Auctions
             </div>
             <div class="card-body">
                 <table id="auctionsTable">

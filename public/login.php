@@ -9,18 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $password = $_POST['password'];
 
   if (login($username, $password)) {
-    // Set a cookie for user_id, with a suitable expiration time (e.g., 1 hour) Adjust path as needed
     header("Location: auctions.php");
     exit();
-  } else {
-    echo '
-        <p class="alert alert-warning alert-dismissible fade show d-flex align-items-center"
-           role="alert"  data-bs-dismiss="alert"
-                  aria-label="Close"
-           style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
-          Invalid credentials.
-        </p>
-    ';
   }
 }
 ?>

@@ -10,9 +10,22 @@ $users = getAllUsers();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete'])) {
-        deleteUser($_POST['user_id']);
+        deleteUser($_POST['userId'],$_POST['userEmail']);
         header("Location: manage-user.php");
         exit(); // Ensure exit after header redirect
+    }
+    if (isset($_POST['suspend'])) {
+        if (suspendUser($_POST['userId'])) {
+          header("Location: manage-user.php");
+          exit(); // Ensure exit after header redirect
+        } else {
+          echo '<p class="alert alert-danger alert-dismissible fade show d-flex align-items-center"
+               role="alert" data-bs-dismiss="alert"
+               aria-label="Close"
+               style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+               Error: '."User not suspend".'
+              </p>';
+        }
     }
 }
 
@@ -21,42 +34,41 @@ ob_end_flush(); // End buffering and flush output
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Manage Users</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-  <link href="../assets/css/styles.css" rel="stylesheet" />
-  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-  <style>
-    td{
-      height: 50px; 
-      line-height: 50px; 
-    }
-    td, th {
-      min-width: 100px;
-      max-width: 140px;
-      text-align: center;
-      vertical-align: middle;
-      white-space: nowrap;
-      overflow: auto;
-      padding: 10px;
-    }
-
-    /* Improve the responsiveness for smaller screens */
-    @media (max-width: 768px) {
-      th, td {
-        font-size: 12px;
-        padding: 5px;
-      }
-
-      td img {
-        width: 30px;
-        height: 30px;
-      }
-    }
-  </style>
+  <title>Manage Users</title>
+    <? include_once("../assets/link.html"); ?>
+    <link href="../assets/styles.css" rel="stylesheet" />
+    <style>
+        td {
+            height: 50px;
+            line-height: 50px;
+        }
+        td, th {
+            min-width: 100px;
+            max-width: 140px;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+            overflow: auto;
+            padding: 10px;
+        }
+        @media (max-width: 768px) {
+            td{
+                height: 40px;
+                line-height: 40px;
+            }
+            th, td {
+                font-size: 12px;
+                padding: 5px;
+            }
+            td img {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
+  <div class="container mt-5">
     <div class="card mb-4">
       <div class="card-header">
         <i class="fas fa-table me-1"></i>
@@ -76,6 +88,7 @@ ob_end_flush(); // End buffering and flush output
               <th>Address</th>
               <th>UPI ID</th>
               <th>View</th>
+              <th>Suspend</th>
               <th>Delete</th>
             </tr>
           </thead>
@@ -91,6 +104,7 @@ ob_end_flush(); // End buffering and flush output
               <th>Address</th>
               <th>UPI ID</th>
               <th>View</th>
+              <th>Suspend</th>
               <th>Delete</th>
             </tr>
           </tfoot>
@@ -115,8 +129,15 @@ ob_end_flush(); // End buffering and flush output
                       <td><a class='btn btn-primary fw-bold'  href='./view-profile.php?id=".base64_encode($user['userId'])."'>View</a></td>
                   <td>
                     <form method='POST'>
-                      <input type='hidden' value='".$user['userUpiId']."'/>
-                      <input class='btn btn-danger fw-bold' type='submit' value='Delete'/>
+                      <input type='hidden' value='".$user['userId']."' name='userId'/>
+                      <input class='btn btn-warning fw-bold' type='submit' value='Suspend' name='suspend'/>
+                    </form>
+                  </td>
+                  <td>
+                    <form method='POST'>
+                      <input type='hidden' value='".$user['userId']."' name='userId'/>
+                      <input type='hidden' value='".$user['userEmail']."' name='userEmail'/>
+                      <input class='btn btn-danger fw-bold' type='submit' value='Delete' name='delete'/>
                     </form>
                   </td>
                     </tr>";
@@ -126,16 +147,14 @@ ob_end_flush(); // End buffering and flush output
         </table>
       </div>
     </div>
-    </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-  <script>
-    window.addEventListener('DOMContentLoaded', event => {
-        const datatablesSimple = document.getElementById('usersTable');
-        if (datatablesSimple) {
-            new simpleDatatables.DataTable(datatablesSimple);
-        }
-    });
-  </script>
+  </div>
+    <script>
+        window.addEventListener('DOMContentLoaded', event => {
+            const datatablesSimple = document.getElementById('usersTable');
+            if (datatablesSimple) {
+                new simpleDatatables.DataTable(datatablesSimple);
+            }
+        });
+    </script>
 </body>
-</html>
+</html> 
