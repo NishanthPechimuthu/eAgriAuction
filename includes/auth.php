@@ -118,10 +118,10 @@ function register($username, $email, $password) {
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
         // Insert the new user
-        $stmt = $pdo->prepare("INSERT INTO users (userName, userEmail, userPassword, userOldPassword) VALUES (:username, :email, :password, :oldpassword)");
+        $stmt = $pdo->prepare("INSERT INTO users (userName, userEmail, userPassword) VALUES (:username, :email, :password)");
 
         // Execute the insert query
-        if ($stmt->execute(['username' => $username, 'email' => $email, 'password' => $hashedPassword, 'oldpassword' => $hashedPassword])) {
+        if ($stmt->execute(['username' => $username, 'email' => $email, 'password' => $hashedPassword])) {
             return true; // Registration successful
         } else {
             throw new Exception("An error occurred while inserting the data.");
@@ -163,7 +163,8 @@ function register($username, $email, $password) {
 function deleteUser($user){
     global $pdo;
     // Check if the username or email already exists
-    $stmt = $pdo->prepare("DELETE FROM users WHERE id = :user");
+    // $stmt = $pdo->prepare("DELETE FROM users WHERE id = :user");
+    $stmt = $pdo->prepare("UPDATE users SET userStatus='suspend' id = :user");
     $stmt->execute(['user' => $user]);
     }
     ob_end_flush();
