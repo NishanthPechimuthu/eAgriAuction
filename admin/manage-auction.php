@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <title>Manage Auctions</title>
     <? include_once("../assets/link.html"); ?>
-    <link href="../assets/styles.css" rel="stylesheet" />
+    <link href="../assets/css/table-styles.css" rel="stylesheet" />
     <style>
         td {
             height: 50px;

@@ -8,21 +8,6 @@ $totalUsers = count(getAllUsers());
 $totalInactivateUsers = count(getInactivateUsers());
 $totalBids = count(getAllBid());
 
-// Include necessary functions or database connections here if required
-$userData = getUserRegistrationData();
-$userData = array_reverse($userData); // Reversing to show most recent first
-$recentUserData = array_slice($userData, 0, 6);
-[$userLabels, $userDatasets] = prepareChartData($recentUserData, 'registrationMonth', ['userCount']);
-
-// Assuming getBidData() and prepareChartData() are already available in the included files
-$data = getBidData();
-$bidData = array_reverse($data); // Reversing the data for recent to old
-$recentBidData = array_slice($bidData, 0, 7);
-[$bidLabels, $bidDatasets] = prepareChartData($recentBidData, 'bidDate', ['maxBid', 'totalBid']);
-
-$totalBidAmount = array_sum(array_column($recentBidData, 'totalBid')); // Sum of all total bids for last 7 days
-$maxBidSum = array_sum(array_column($recentBidData, 'maxBid')); // Sum of max bids for last 7 days
-
 //get All Users
 $users = getAllUsers();
 ?>
@@ -33,7 +18,7 @@ $users = getAllUsers();
     <title>Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <? include("../assets/link.html"); ?>
-    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="../assets/css/table-styles.css">
     <style>
         td {
             height: 50px;
@@ -185,38 +170,12 @@ $users = getAllUsers();
           </div>
       </div>
       <div class="row">
+       <? include("registration-chart.php"); ?>
+       <? include("bid-chart.php"); ?>
+     </div>
+      <div class="row">
         <div class="col-lg-6">
-    <div class="card mb-4">
-        <div class="card-header">
-            <i class="fas fa-users me-1"></i>
-            User Registrations (Last 6 Months)
-        </div>
-        <div class="card-body">
-            <canvas id="registrationChart" width="100%" height="50"></canvas>
-        </div>
-        <div class="card-footer small text-muted">
-            Updated on <?php echo getLastUpdateLabel(); ?>
-        </div>
-    </div>
-</div>
-        <div class="col-lg-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-chart-bar me-1"></i>
-                    Bids (Last 7 Days)
-                </div>
-                <div class="card-body">
-                    <canvas id="bidChart" width="100%" height="50"></canvas>
-                    <p>Total Bid Amount (Last 7 Days): ₹<?php echo number_format($totalBidAmount); ?></p>
-                    <p>Sum of Max Bids (Last 7 Days): ₹<?php echo number_format($maxBidSum); ?></p>
-                </div>
-                <div class="card-footer small text-muted">
-                    Updated on <?php echo getLastUpdateLabel(); ?>
-                </div>
-            </div>
-        </div>
-      </div>
-      <div class="card mb-4">
+          <div class="card mb-4">
           <div class="card-header">
               <i class="fas fa-user  me-1"></i>
               Users Table
@@ -272,65 +231,12 @@ $users = getAllUsers();
               </table>
           </div>
       </div>
-  </div>
+        </div>
+     </div>
+</div>
   <? include("./footer.php"); ?>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // User Registration Chart (Last 6 Months)
-        new Chart(document.getElementById("registrationChart").getContext("2d"), {
-            type: "bar",
-            data: {
-                labels: <?php echo json_encode($userLabels); ?>,
-                datasets: [
-                    {
-                        label: "User Registrations",
-                        data: <?php echo json_encode($userDatasets['userCount']); ?>,
-                        backgroundColor: "rgba(34, 139, 34, 0.8)",
-                        borderColor: "rgba(34, 139, 34, 1)",
-                        borderWidth: 2,
-                    },
-                ],
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                        },
-                    }],
-                },
-            },
-        });
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Bid Chart (Last 7 Days)
-        new Chart(document.getElementById("bidChart").getContext("2d"), {
-            type: "line",
-            data: {
-                labels: <?php echo json_encode($bidLabels); ?>,
-                datasets: [
-                    {
-                        label: "Max Bid",
-                        data: <?php echo json_encode($bidDatasets['maxBid']); ?>,
-                        borderColor: "rgba(34, 139, 34, 1)",
-                        backgroundColor: "rgba(0,0,0,0)",
-                        borderWidth: 2,
-                        fill: true,
-                    },
-                    {
-                        label: "Total Bids",
-                        data: <?php echo json_encode($bidDatasets['totalBid']); ?>,
-                        borderColor: "rgba(160, 82, 45, 1)",
-                        backgroundColor: "rgba(160, 82, 45, 0.8)",
-                        borderWidth: 2,
-                        fill: true,
-                    },
-                ],
-            },
-        });
-    });
+  
 </script>
 <script>
     window.addEventListener('DOMContentLoaded', event => {
