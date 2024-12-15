@@ -80,6 +80,15 @@ function getNumberBid($user_id, $auction_id) {
     }
 }
 
+//Get all bids
+function getAllBid() {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM bids");
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $result; // Return the result to be used elsewhere
+}
+
 // Get the highest bid for a specific auction
 function getHighestBid($auction_id) {
     global $pdo;
@@ -181,6 +190,14 @@ function getAllUsers() {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Fetch all inactivate users
+function getInactivateUsers() {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE userStatus <> :sStatus AND userStatus = :iaStatus");
+    $stmt->execute(['sStatus' => 'suspend','iaStatus' => 'deactivate']);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 // Add a new auction
 function addAuction($title, $start_price, $start_time, $end_date, $category_id, $address, $description, $product_img, $user_id) {
     global $pdo;
@@ -262,12 +279,33 @@ function deleteAuction($auction_id) {
 
         // Optionally, check if deletion was successful
         if ($deleteAuctionStmt->rowCount() > 0) {
-            echo "Auction and related bids deleted successfully.";
+                echo '
+                <p class="alert alert-success alert-dismissible fade show d-flex align-items-center" 
+                       role="alert"  data-bs-dismiss="alert" 
+                              aria-label="Close" 
+                       style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Auction deleted successfully.
+            </p>
+         ';
         } else {
-            echo "Failed to delete auction.";
+                echo '
+                <p class="alert alert-warning alert-dismissible fade show d-flex align-items-center" 
+                       role="alert"  data-bs-dismiss="alert" 
+                              aria-label="Close" 
+                       style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Failed to delete auction.
+            </p>
+         ';
         }
     } else {
-        echo "Auction not found.";
+                echo '
+                <p class="alert alert-danger alert-dismissible fade show d-flex align-items-center" 
+                       role="alert"  data-bs-dismiss="alert" 
+                              aria-label="Close" 
+                       style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Auction not found.
+            </p>
+         ';
     }
 }
 
@@ -489,5 +527,112 @@ function createPassResetToken($user_id, $token) {
         // Return false if there's an error
         return false;
     }
+}
+
+// Function to fetch bid data
+function getBidData() {
+    global $pdo;
+
+    $query = "
+        SELECT 
+            DATE(createdAt) as bidDate,
+            MAX(bidAmount) as maxBid,
+            SUM(bidAmount) as totalBid
+        FROM bids
+        GROUP BY DATE(createdAt)
+        ORDER BY bidDate ASC
+    ";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Function to fetch users registration
+function getUserRegistrationData() {
+    global $pdo;
+
+    $query = "
+        SELECT 
+            DATE_FORMAT(createdAt, '%Y-%m') AS registrationMonth, 
+            COUNT(*) AS userCount
+        FROM users
+        WHERE createdAt >= CURDATE() - INTERVAL 6 MONTH
+        GROUP BY registrationMonth
+        ORDER BY registrationMonth ASC
+    ";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getAuctionData($offset = 0, $limit = 10) {
+    global $pdo;
+
+    $query = "
+        SELECT 
+            a.auctionTitle,
+            a.auctionStartPrice,
+            IFNULL(MAX(b.bidAmount), 0) AS highestBid,
+            DATE(a.createdAt) AS createdDate
+        FROM auctions a
+        LEFT JOIN bids b ON a.auctionId = b.bidAuctionId
+        GROUP BY a.auctionId
+        ORDER BY a.createdAt DESC
+        LIMIT :offset, :limit
+    ";
+
+    $stmt = $pdo->prepare($query);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getAuctionCount() {
+    global $pdo;
+
+    $query = "SELECT COUNT(*) AS total FROM auctions";
+    $stmt = $pdo->query($query);
+    return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+}
+
+// Get the current date and time
+function getLastUpdateLabel() {
+    $currentDate = new DateTime();
+    return $currentDate->format('F j, Y');
+}
+
+function getUserStatusData() {
+    global $pdo; // Assuming $pdo is your database connection
+    $sql = "SELECT userStatus, COUNT(*) as statusCount FROM users GROUP BY userStatus";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Prepare data for charts
+function prepareChartData($data, $labelsKey, $dataKeys, $truncateLabels = false, $maxLength = 8) {
+    $labels = [];
+    $datasets = [];
+    foreach ($dataKeys as $key) {
+        $datasets[$key] = [];
+    }
+
+    foreach ($data as $row) {
+        // Truncate labels if required
+        $label = $row[$labelsKey];
+        if ($truncateLabels && strlen($label) > $maxLength) {
+            $label = substr($label, 0, $maxLength) . "...";
+        }
+        $labels[] = $label;
+
+        foreach ($dataKeys as $key) {
+            $datasets[$key][] = $row[$key];
+        }
+    }
+
+    return [$labels, $datasets];
 }
 ?>

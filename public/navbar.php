@@ -36,6 +36,7 @@
           <?php $userImg = getUserImg($_SESSION["userId"] ?? ""); ?>
           <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <img src="../images/profiles/<?= $userImg ?>" alt="Profile" class="rounded-circle border border-dark" width="30" height="30">
+              <span class="text-secondary px-1"><?= $_SESSION["userName"]?></span>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
             <div class="d-flex align-items-center">

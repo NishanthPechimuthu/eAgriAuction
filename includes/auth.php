@@ -194,6 +194,18 @@ function deleteUser($user, $email){
     }
 }
 
+function activateUser($user){
+    global $pdo;
+    $status = "activate";
+
+    try {
+        $stmt = $pdo->prepare("UPDATE users SET userStatus = :status WHERE userId = :user");
+        $stmt->execute(['user' => $user, 'status' => $status]);
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
 function suspendUser($user){
     global $pdo;
     $status = "deactivate";

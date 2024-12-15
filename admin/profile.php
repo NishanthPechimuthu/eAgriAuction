@@ -4,8 +4,7 @@ session_start();
 include("header.php");
 include("navbar.php");
 // isAuthenticated();
-$userId=base64_decode($_GET["id"]);
-$users = getUserById($userId);
+$users = getUserById($_SESSION["userId"]);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,6 +25,9 @@ $users = getUserById($userId);
       <div class="card-body">
         <div class="d-flex justify-content-between">
           <img class="rounded-circle border border-2 border-dark" src="../images/profiles/<?=$users["userProfileImg"] ?>" width="40" height="40" alt="Profile Not Found" />
+        <a class="text-dark" href="update-profile.php">
+          <i class="bi bi-pencil-square"></i>
+        </a>
       </div>
       <h1 class="fw-bold mt-3"><?=$users["userFirstName"]." ".$users["userLastName"] ?></h1>
       <p class="text-secondary">

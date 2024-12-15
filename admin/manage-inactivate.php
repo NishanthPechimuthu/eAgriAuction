@@ -5,26 +5,13 @@ ob_start(); // Start output buffering
 include "header.php";
 include "navbar.php";
 
-$users = getAllUsers();
+$users = getInactivateUsers();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    if (isset($_POST["delete"])) {
-        deleteUser($_POST["userId"], $_POST["userEmail"]);
-        header("Location: manage-user.php");
-        exit(); // Ensure exit after header redirect
-    }
-
-    if (isset($_POST["suspend"])) {
-        if (suspendUser($_POST["userId"])) {
-            header("Location: manage-user.php");
-            exit(); // Ensure exit after header redirect
-        } else {
-            echo '<p class="alert alert-danger alert-dismissible fade show d-flex align-items-center" 
-                   role="alert" data-bs-dismiss="alert" aria-label="Close" 
-                   style="white-space: nowrap; max-width: 100%; overflow-y: auto;">
-                   Error: User not suspended
-                  </p>';
-        }
+    if (isset($_POST["activate"])) {
+        activateUser($_POST["userId"]);
+        header("Location: manage-inactivate.php");
+        exit();
     }
 }
 
@@ -34,7 +21,7 @@ ob_end_flush(); // End buffering and flush output
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Manage Users</title>
+    <title>Manage Inactivate Users</title>
     <?php include_once("../assets/link.html"); ?>
     <link href="../assets/styles.css" rel="stylesheet" />
     <style>
@@ -69,14 +56,14 @@ ob_end_flush(); // End buffering and flush output
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="mt-4">Manage Users</h1>
+    <h1 class="mt-4">Manage Inactivate Users</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
-        <li class="breadcrumb-item active">Manage Users</li>
+        <li class="breadcrumb-item active">Manage Inactivate Users</li>
     </ol>
     <div class="card mb-4">
         <div class="card-header">
-            <i class="fas fa-user  me-1"></i>
+            <i class="fas fa-user-times me-1"></i>
             Users Table
         </div>
         <div class="card-body">
@@ -92,9 +79,7 @@ ob_end_flush(); // End buffering and flush output
                         <th>Email</th>
                         <th>Address</th>
                         <th>UPI ID</th>
-                        <th>View</th>
-                        <th>Suspend</th>
-                        <th>Delete</th>
+                        <th>Activate</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -108,9 +93,7 @@ ob_end_flush(); // End buffering and flush output
                         <th>Email</th>
                         <th>Address</th>
                         <th>UPI ID</th>
-                        <th>View</th>
-                        <th>Suspend</th>
-                        <th>Delete</th>
+                        <th>Activate</th>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -132,20 +115,10 @@ ob_end_flush(); // End buffering and flush output
                                 <td>" . ($user['userAddress'] ?? 'NULL') . "</td>
                                 <td>" . ($user['userUpiId'] ?? 'NULL') . "</td>
                                 <td>
-                                    <a class='btn btn-primary fw-bold' href='./view-profile.php?id=" . base64_encode($user['userId']) . "'>View</a>
-                                </td>
-                                <td>
                                     <form method='POST'>
                                         <input type='hidden' value='{$user['userId']}' name='userId'/>
-                                        <input class='btn btn-warning fw-bold' type='submit' value='Suspend' name='suspend'/>
-                                    </form>
-                                </td>
-                                <td>
-                                    <form method='POST'>
-                                        <input type='hidden' value='{$user['userId']}' name='userId'/>
-                                        <input type='hidden' value='{$user['userEmail']}' name='userEmail'/>
-                                        <input class='btn btn-danger fw-bold' type='submit' value='Delete' name='delete'/>
-                                    </form>
+                                        <input class='btn btn-success fw-bold' type='submit' value='Activate' name='activate'/>
+                               </form>
                                 </td>
                               </tr>";
                         $counter++;
