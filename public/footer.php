@@ -27,7 +27,7 @@
         </div>
         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
           <h5 class="text-uppercase mb-4 font-weight-bold text-success">Contact</h5>
-          <p><i class="fas fa-home mr-3"></i>&nbsp;&nbsp;Tiruppur, Tamil Nadu, India - 642205</p>
+          <p><i class="fas fa-home mr-3"></i>&nbsp;&nbsp;<a class="text-decoration-none text-white"  href="https://www.google.com/maps/dir/?api=1&destination=M6H6%2B5F9%2C+Somavarapatti%2C+Tamil+Nadu">Tiruppur, Tamil Nadu, India - 642205</a></p>
           <p><i class="fas fa-envelope mr-3"></i>&nbsp;&nbsp;<a class="text-decoration-none text-white" href="mailto:nishanthpechimuthu@gmail.com">nishanthpechimuthu@gmail.com</a></p>
           <p><i class="fas fa-phone mr-3"></i>&nbsp;&nbsp;<a class="text-decoration-none text-white" href="tel:+918015864344">+91 8015864344</a></p>
         </div>

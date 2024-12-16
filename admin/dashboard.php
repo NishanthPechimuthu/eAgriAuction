@@ -16,9 +16,7 @@ $users = getAllUsers();
 <html lang="en">
 <head>
     <title>Admin Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <? include("../assets/link.html"); ?>
-    <link rel="stylesheet" href="../assets/css/table-styles.css">
     <style>
         td {
             height: 50px;
@@ -212,15 +210,15 @@ $users = getAllUsers();
                       foreach ($users as $user) {
                           echo "<tr>
                                   <td>{$counter}</td>
-                                  <td>{$user['userName']}</td>
+                                  <td><a href='view-profile.php?id=".base64_encode($user['userId']) ."' target='_blank' class='text-dark'>{$user['userName']}</a></td>
                                   <td>
-                                      <img src='../images/profiles/" . htmlspecialchars($user['userProfileImg']) . "' 
+<a href='view-profile.php?id=".base64_encode($user['userId']) ."' target='_blank' class='text-dark'> <img src='../images/profiles/" . htmlspecialchars($user['userProfileImg']) . "' 
                                            alt='User Profile' class='rounded-1 border border-dark' 
                                            width='50' height='50'>
-                                  </td>
+                      </a>            </td>
                                   <td>" . ($user['userFirstName'] ?? 'NULL') . "</td>
                                   <td>" . ($user['userLastName'] ?? 'NULL') . "</td>
-                                  <td>" . ($user['userPhone'] ?? 'NULL') . "</td>
+                                  <td>" . ("<a href='tel:".$user['userPhone']."' class='text-dark' target='_blank'>".$user['userPhone'] ."</a>"?? 'NULL') . "</td>
                                   <td>{$user['userEmail']}</td>
                                   <td>" . ($user['userAddress'] ?? 'NULL') . "</td>
               </tr>";

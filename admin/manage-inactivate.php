@@ -14,8 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 }
-
-ob_end_flush(); // End buffering and flush output
 ?>
 
 <!DOCTYPE html>
@@ -140,3 +138,7 @@ ob_end_flush(); // End buffering and flush output
 </script>
 </body>
 </html>
+<?
+  include("./footer.php");
+  ob_end_flush(); // End buffering and flush output
+?>

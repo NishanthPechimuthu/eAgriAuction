@@ -155,6 +155,10 @@ ob_end_flush(); // End buffering and flush output
             </table>
         </div>
     </div>
+    <div class="row">
+      <? include("./registration-chart.php"); ?>
+      <? include("./user-status-chart.php"); ?>
+    </div>
 </div>
 
 <script>
@@ -167,3 +171,7 @@ ob_end_flush(); // End buffering and flush output
 </script>
 </body>
 </html>
+<?
+  include("./footer.php");
+  ob_end_flush(); // End buffering and flush output
+?>

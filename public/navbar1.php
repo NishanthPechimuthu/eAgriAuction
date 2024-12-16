@@ -7,8 +7,9 @@
   <?php include_once("../assets/link.html"); ?>
 </head>
 <body class="bg-light">
+
   <!-- Top Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-3 py-1">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-2 py-1">
     <a class="navbar-brand" href="../public/auctions.php">
       <img width="54px" height="54px" src="../images/logo/android-chrome-192x192.png" alt="Logo">
     </a>
@@ -66,6 +67,7 @@
       </ul>
     </div>
   </nav>
+
   <!-- Include Bootstrap JS and dependencies -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>

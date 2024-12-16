@@ -548,6 +548,40 @@ function getBidData() {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Function to fetch paginated bid data and calculate total pages
+function getPaginatedBidData($itemsPerPage, $offset) {
+    global $pdo;
+
+    // Get the total number of unique dates
+    $countQuery = "SELECT COUNT(DISTINCT DATE(createdAt)) as totalDays FROM bids";
+    $stmt = $pdo->prepare($countQuery);
+    $stmt->execute();
+    $totalDays = (int)$stmt->fetchColumn();
+
+    // Calculate total pages
+    $totalPages = ceil($totalDays / $itemsPerPage);
+
+    // Fetch the paginated bid data
+    $dataQuery = "
+        SELECT 
+            DATE(createdAt) as bidDate,
+            MAX(bidAmount) as maxBid,
+            SUM(bidAmount) as totalBid
+        FROM bids
+        GROUP BY DATE(createdAt)
+        ORDER BY bidDate DESC
+        LIMIT :offset, :itemsPerPage
+    ";
+
+    $stmt = $pdo->prepare($dataQuery);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->bindValue(':itemsPerPage', $itemsPerPage, PDO::PARAM_INT);
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return [$data, $totalPages];
+}
+
 // Function to fetch users registration
 function getUserRegistrationData() {
     global $pdo;

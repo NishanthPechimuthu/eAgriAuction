@@ -122,6 +122,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </table>
             </div>
         </div>
+        <div class="row">
+          <? include("./auction-chart.php"); ?>
+        </div>
     </div>
 
     <script>
@@ -135,6 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 </html>
 
-<?php
-ob_end_flush(); // Flush output buffer
+<?
+  include("./footer.php");
+  ob_end_flush(); // End buffering and flush output
 ?>

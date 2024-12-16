@@ -12,7 +12,22 @@ $auctionTotalPages = ceil($totalAuctions / $limit);
 // Prepare chart data
 [$auctionLabels, $auctionDatasets] = prepareChartData($auctionDataPaginated, 'auctionTitle', ['auctionStartPrice', 'highestBid'], true, 8);
 ?>
-
+    <style>
+        .pagination {
+            margin: 0;
+        }
+        .pagination .page-item.active .page-link {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .pagination .page-link {
+            color: #28a745;
+        }
+        .pagination .page-link:hover {
+            background-color: #d4edda;
+            border-color: #28a745;
+        }
+    </style>
 <div class="col-lg-12">
     <div class="card mb-4">
         <div class="card-header">

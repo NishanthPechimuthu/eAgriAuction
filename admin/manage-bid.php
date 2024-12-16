@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-ob_end_flush(); // End buffering and flush output
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,6 +99,7 @@ ob_end_flush(); // End buffering and flush output
         </table>
       </div>
     </div>
+    <? include("./bids-chart.php"); ?>
   </div>
     <script>
         window.addEventListener('DOMContentLoaded', event => {
@@ -111,3 +111,7 @@ ob_end_flush(); // End buffering and flush output
     </script>
 </body>
 </html> 
+<?
+  include("./footer.php");
+  ob_end_flush(); // End buffering and flush output
+?>
