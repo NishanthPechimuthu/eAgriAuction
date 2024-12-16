@@ -167,9 +167,9 @@ $auction_end_date = date("Y-m-d H:i:s", strtotime($auction['auctionEndDate']));
         Bid
       </div>
       <div class="card-body">
-        <div class="col-6 col-sm-12">
+        <div class="col-12 col-sm-12">
           <div class="row">
-            <table class="table table-bordered">
+            <table class="table table-bordered mx-auto">
               <tr>
                 <th colspan="4" class="text-center" style="position: relative;">
                   <!-- Auction Image -->
@@ -322,12 +322,12 @@ $auction_end_date = date("Y-m-d H:i:s", strtotime($auction['auctionEndDate']));
   <?php if ($is_highest_bidder && $has_ended): ?>
   <h3 class="mt-4">Payment Instructions</h3>
   <p>
-    Please pay <strong>&#8377;&nbsp;<?= htmlspecialchars($highest_bid) ?></strong> to the seller's UPI ID: <strong><?= htmlspecialchars($auction['auctionUPIID']) ?></strong>
+    Please pay <strong>&#8377;&nbsp;<?= htmlspecialchars($highest_bid) ?></strong>
   </p>
   <p>
-    Once you have completed the payment, click the button below to confirm:
+    Once you have ready for the payment, click the button below:
   </p>
-  <a class="btn btn-primary" href="payment.php?auction_id=<?= htmlspecialchars($auction_id) ?>">Confirm Payment</a>
+  <a class="btn btn-primary" href="payment.php?auction_id=<?= htmlspecialchars($auction_id)?>">Payment</a>
   <?php endif; ?>
 </div>
 </body>

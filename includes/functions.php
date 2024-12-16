@@ -403,12 +403,12 @@ function updateAuction($auctionId, $title, $start_price, $start_time, $end_date,
 }
 
 // Fetch only the UPI ID of a user by their ID
-function getUserUpiId($user_id) {
+function getUserAccountNo($user_id) {
     global $pdo;
-    $stmt = $pdo->prepare("SELECT userUpiId FROM users WHERE userId = :user_id");
+    $stmt = $pdo->prepare("SELECT userAccountNo FROM users WHERE userId = :user_id");
     $stmt->execute(['user_id' => $user_id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['userUpiId'] ?? null;
+    return $result['userAccountNo'] ?? null;
 }
 
 // Fetch only the Image of a user by their ID

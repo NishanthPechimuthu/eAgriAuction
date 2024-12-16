@@ -34,11 +34,11 @@ $maxBidSum = array_sum(array_column($recentBidData, 'maxBid')); // Sum of max bi
                 <tbody>
                     <tr>
                         <td scope="col" class="py-0">Total Bid Amount (7 days)</td> <!-- Remove padding for this row -->
-                        <td scope="col" class="fw-bold text-success py-0">₹<?php echo number_format($totalBidAmount); ?></td> <!-- Remove padding for this row -->
+                        <td scope="col" class="fw-bold py-0" style="color:rgba(160, 82, 45, 1);">&#8377;&nbsp;&nbsp;<?php echo number_format($totalBidAmount); ?></td> <!-- Remove padding for this row -->
                     </tr>
                     <tr>
                         <td scope="col" class="py-0">Sum of Max Bids (7 days)</td> <!-- Remove padding for this row -->
-                        <td scope="col" class="fw-bold text-primary py-0">₹<?php echo number_format($maxBidSum); ?></td> <!-- Remove padding for this row -->
+                        <td scope="col" class="fw-bold py-0" style="color:rgba(34, 139, 34, 1);">&#8377;&nbsp;&nbsp;<?= number_format($maxBidSum); ?></td> <!-- Remove padding for this row -->
                     </tr>
                 </tbody>
             </table>

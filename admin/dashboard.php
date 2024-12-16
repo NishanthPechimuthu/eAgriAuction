@@ -218,8 +218,8 @@ $users = getAllUsers();
                       </a>            </td>
                                   <td>" . ($user['userFirstName'] ?? 'NULL') . "</td>
                                   <td>" . ($user['userLastName'] ?? 'NULL') . "</td>
-                                  <td>" . ("<a href='tel:".$user['userPhone']."' class='text-dark' target='_blank'>".$user['userPhone'] ."</a>"?? 'NULL') . "</td>
-                                  <td>{$user['userEmail']}</td>
+                                  <td>" . ("<a href='tel:".$user['userPhone']."' class='text-dark text-decoration-none'>".$user['userPhone'] ."</a>"?? 'NULL') . "</td>
+                                  <td><a href='mailto:".$user['userEmail']."' class='text-dark text-decoration-none'>".$user['userEmail']."</a></td>
                                   <td>" . ($user['userAddress'] ?? 'NULL') . "</td>
               </tr>";
                           $counter++;

@@ -126,6 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </table>
         </div>
     </div>
+    <? include("./user-status-chart.php"); ?>
 </div>
 
 <script>
