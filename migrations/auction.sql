@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 15, 2024 at 05:02 AM
+-- Generation Time: Dec 18, 2024 at 02:04 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.10
 
@@ -56,7 +56,8 @@ INSERT INTO `auctions` (`auctionId`, `auctionTitle`, `auctionStartPrice`, `aucti
 (13, 'J', 25.00, '2024-12-09 05:13:55', '2024-12-06 08:52:00', 'prod_6752bb6579559.webp', 'Udumalipettai, Tiruppur,Tamil Nadu,Indian-642205', 'The ', 2, 1, 'activate', '2024-12-06 08:52:53'),
 (14, 'Jlk', 235.00, '2024-12-07 10:18:00', '2024-12-11 10:18:00', 'prod_675421119460c.webp', 'Udumalipettai, Tiruppur,Tamil Nadu,Indian-642205', 'Hi', 3, 1, 'activate', '2024-12-07 10:18:57'),
 (15, 'Niswant', 800.00, '2024-12-08 06:33:00', '2024-12-08 06:33:00', 'prod_67553dfdd69cd.webp', 'Udumalipettai, Tiruppur,Tamil Nadu,Indian-642205', 'Hi lets come and grab niswa', 2, 1, 'activate', '2024-12-08 06:34:37'),
-(16, 'Ragu', 559.00, '2024-12-10 09:34:00', '2029-12-20 15:34:00', 'prod_67580b408d866.webp', 'Udumalipettai, Tiruppur,Tamil Nadu,Indian-642205', 'The hell ', 2, 1, 'activate', '2024-12-10 09:34:56');
+(16, 'Ragu', 559.00, '2024-12-10 09:34:00', '2029-12-20 15:34:00', 'prod_675fc8d2c1c82.webp', 'Udumalipettai, Tiruppur,Tamil Nadu,Indian-642205', 'The hell ', 2, 1, 'activate', '2024-12-10 09:34:56'),
+(17, '123', 1256.00, '2024-12-15 05:49:00', '2025-06-22 05:49:00', 'prod_675e6df7403e8.webp', 'Udumalipettai, Tiruppur,Tamil Nadu,Indian-642205', 'Rhhd', 2, 2, 'activate', '2024-12-15 05:49:43');
 
 -- --------------------------------------------------------
 
@@ -88,7 +89,10 @@ INSERT INTO `bids` (`bidId`, `bidAuctionId`, `bidUserId`, `bidAmount`, `createdA
 (16, 16, 8, 600.00, '2024-12-10 16:05:31'),
 (17, 16, 2, 700.00, '2024-12-10 16:05:51'),
 (18, 16, 8, 710.00, '2024-12-10 16:06:00'),
-(19, 14, 2, 1000.00, '2024-12-10 16:06:19');
+(19, 14, 2, 1000.00, '2024-12-10 16:06:19'),
+(20, 17, 1, 2500.00, '2024-12-15 11:59:25'),
+(21, 16, 2, 1000.00, '2024-12-15 11:59:50'),
+(22, 16, 2, 1100.00, '2024-12-15 12:26:01');
 
 -- --------------------------------------------------------
 
@@ -111,7 +115,8 @@ CREATE TABLE `categories` (
 INSERT INTO `categories` (`categoryId`, `categoryName`, `categoryImg`, `categoryStatus`, `createdAt`) VALUES
 (1, 'Electronic', 'cat_6740450b783ce.webp', 'activate', '2024-11-22 08:47:07'),
 (2, 'Food', 'cat_67415d694fa49.webp', 'activate', '2024-11-23 04:43:21'),
-(3, 'Crypto', 'cat_67489931afe15.webp', 'activate', '2024-11-28 16:24:17');
+(3, 'Crypto', 'cat_67489931afe15.webp', 'activate', '2024-11-28 16:24:17'),
+(4, 'Vegetables', 'cat_675eb2e84581c.webp', 'activate', '2024-12-15 10:43:52');
 
 -- --------------------------------------------------------
 
@@ -151,6 +156,35 @@ INSERT INTO `passResets` (`passResetId`, `passResetUserId`, `passResetToken`, `c
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `trans`
+--
+
+CREATE TABLE `trans` (
+  `transId` int(11) NOT NULL,
+  `transTrackingId` varchar(30) NOT NULL,
+  `transCardNo` varchar(30) NOT NULL,
+  `transAccountNo` varchar(30) NOT NULL,
+  `transUserId` int(11) NOT NULL,
+  `transAmount` decimal(10,2) NOT NULL,
+  `transAuctionId` int(11) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `trans`
+--
+
+INSERT INTO `trans` (`transId`, `transTrackingId`, `transCardNo`, `transAccountNo`, `transUserId`, `transAmount`, `transAuctionId`, `createdAt`) VALUES
+(1, 'txn_67604609b088d4.61128365', '9876543210', '11130100007375', 1, 101.00, 8, '2024-12-16 15:23:53'),
+(2, 'txn_67604663ded797.18816217', '9876543210', '11130100007375', 1, 101.00, 8, '2024-12-16 15:25:23'),
+(3, 'txn_67604708e03180.86987544', '9876543210', '11130100007375', 1, 101.00, 8, '2024-12-16 15:28:08'),
+(4, 'txn_67604776420188.17093409', '9876543210', '11130100007375', 1, 101.00, 8, '2024-12-16 15:29:58'),
+(5, 'txn_6761c00e5184c0.87469131', '9876543210', '11130100005354', 2, 12000.00, 5, '2024-12-17 18:16:46'),
+(6, 'txn_676299f0736110.76144269', '679045634', '11130100005354', 2, 1259.00, 6, '2024-12-18 09:46:24');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -164,7 +198,7 @@ CREATE TABLE `users` (
   `userPhone` varchar(100) DEFAULT NULL,
   `userAddress` varchar(250) DEFAULT NULL,
   `userProfileImg` varchar(300) DEFAULT 'profile.webp',
-  `userUpiId` varchar(500) DEFAULT NULL,
+  `userAccountNo` varchar(30) DEFAULT NULL,
   `userRole` enum('user','admin') NOT NULL DEFAULT 'user',
   `userStatus` enum('activate','deactivate','suspend') DEFAULT 'activate',
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
@@ -174,9 +208,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`userId`, `userName`, `userFirstName`, `userLastName`, `userEmail`, `userPassword`, `userPhone`, `userAddress`, `userProfileImg`, `userUpiId`, `userRole`, `userStatus`, `createdAt`) VALUES
-(1, 'blk', 'Nishanth', 'Pechimuthu', 'black@black.in', '$2y$10$HWW4lymluIu7nK.4RyprBumuf7b6i8MeI5pM4OBJe5F94FQm53Fye', '+91 8015864344', 'Udumalipettai, Tiruppur,Tamil Nadu', 'img_674561fd68014.webp', 'vanjisunil123@okhdfcbank', 'admin', 'activate', '2024-12-11 08:46:29'),
-(2, 'root', 'Nishanth', 'Root', 'root@root.com', '$2y$10$hdJIVulgWHZj.RL7UyCqm.yigqyBsZP6Qkk3YceNQ43/xCloDWffC', '+91 9500814344', 'Udumalipettai, Tiruppur,Tamil Nadu,Indian-642205', 'img_674b2bcaafe57.webp', 'root@root56', 'user', 'activate', '2024-11-23 05:15:40'),
+INSERT INTO `users` (`userId`, `userName`, `userFirstName`, `userLastName`, `userEmail`, `userPassword`, `userPhone`, `userAddress`, `userProfileImg`, `userAccountNo`, `userRole`, `userStatus`, `createdAt`) VALUES
+(1, 'blk', 'Nishanth', 'Pechimuthu', 'black@black.in', '$2y$10$HWW4lymluIu7nK.4RyprBumuf7b6i8MeI5pM4OBJe5F94FQm53Fye', '+91 8015864344', 'Udumalipettai, Tiruppur,Tamil Nadu', 'img_674561fd68014.webp', '11130100005354', 'admin', 'activate', '2024-12-11 08:46:29'),
+(2, 'root', 'Nishanth', 'Root', 'root@root.com', '$2y$10$hdJIVulgWHZj.RL7UyCqm.yigqyBsZP6Qkk3YceNQ43/xCloDWffC', '+91 9500814344', 'Udumalipettai, Tiruppur,Tamil Nadu,Indian-642205', 'img_674b2bcaafe57.webp', '11130100007375', 'user', 'activate', '2024-11-23 05:15:40'),
 (3, 'black', NULL, NULL, 'EXP:nishanthpechimuthu@gmail.com', '$2y$10$QiirJV1S8KSjbT59BPI1geJRP/mcyoxya0X2KXndcXbVJAlVVF8ga', 'NULL', 'NULL', 'profile.webp', NULL, 'user', 'suspend', '2024-10-16 07:54:13'),
 (4, '22ct19', NULL, NULL, '22ct19nishanth@gmail.com', '$2y$10$izGcmfVhW29bJYIjNnOAOutb8FcEiwciE1NLdRDvoBos1F3jHEMtO', 'NULL', 'NULL', 'profile.webp', NULL, 'user', 'activate', '2024-11-30 09:48:24'),
 (8, 'yellow', NULL, NULL, 'yellow@gmail.com', '$2y$10$YHXU9AbUcpNYjfV9tawDtOqnLgUIsqH75T6s4FWSAvKKYFQPzYYFG', 'NULL', 'NULL', 'profile.webp', NULL, 'user', 'activate', '2024-10-16 15:15:50'),
@@ -247,12 +281,23 @@ ALTER TABLE `passResets`
   ADD KEY `passResets_passRestUserId_users_userId` (`passResetUserId`);
 
 --
+-- Indexes for table `trans`
+--
+ALTER TABLE `trans`
+  ADD PRIMARY KEY (`transId`),
+  ADD KEY `trans_transAccountNo_users_userAccountNo` (`transAccountNo`),
+  ADD KEY `trans_transUserId_users_userId` (`transUserId`),
+  ADD KEY `trans_transAuctionId_auctions_auctionId` (`transAuctionId`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`userId`),
   ADD UNIQUE KEY `userEmail` (`userEmail`),
-  ADD UNIQUE KEY `userName` (`userName`);
+  ADD UNIQUE KEY `userName` (`userName`),
+  ADD UNIQUE KEY `userAccountNo` (`userAccountNo`),
+  ADD UNIQUE KEY `userAccountNo_2` (`userAccountNo`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -262,25 +307,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `auctions`
 --
 ALTER TABLE `auctions`
-  MODIFY `auctionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `auctionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `bids`
 --
 ALTER TABLE `bids`
-  MODIFY `bidId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `bidId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `passResets`
 --
 ALTER TABLE `passResets`
   MODIFY `passResetId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `trans`
+--
+ALTER TABLE `trans`
+  MODIFY `transId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -311,6 +362,14 @@ ALTER TABLE `bids`
 --
 ALTER TABLE `passResets`
   ADD CONSTRAINT `passResets_passRestUserId_users_userId` FOREIGN KEY (`passResetUserId`) REFERENCES `users` (`userId`);
+
+--
+-- Constraints for table `trans`
+--
+ALTER TABLE `trans`
+  ADD CONSTRAINT `trans_transAccountNo_users_userAccountNo` FOREIGN KEY (`transAccountNo`) REFERENCES `users` (`userAccountNo`),
+  ADD CONSTRAINT `trans_transAuctionId_auctions_auctionId` FOREIGN KEY (`transAuctionId`) REFERENCES `auctions` (`auctionId`),
+  ADD CONSTRAINT `trans_transUserId_users_userId` FOREIGN KEY (`transUserId`) REFERENCES `users` (`userId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
