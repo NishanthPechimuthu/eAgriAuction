@@ -117,7 +117,7 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
 
         // Sender and recipient settings
         $mail->setFrom('22ct19nishanth@gmail.com', 'e-Agri Auction');
-        $mail->addAddress($email); // Recipient email
+        $mail->addAddress($rUser["userEmail"]); // Recipient email
 
         // Email content
         $mail->isHTML(true);
@@ -267,7 +267,7 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
 
         // Sender and recipient settings
         $mail->setFrom('22ct19nishanth@gmail.com', 'e-Agri Auction');
-        $mail->addAddress($sUser["userEmailc"]); // Recipient email
+        $mail->addAddress($sUser["userEmail"]); // Recipient email
 
         // Email content
         $mail->isHTML(true);
