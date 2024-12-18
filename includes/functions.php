@@ -97,6 +97,14 @@ function getHighestBid($auction_id) {
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     return $result['highest_bid'] ?? 0;
 }
+// Get the highest bid for a specific auction
+function getHighestBidderId($auction_id) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT MAX(bidAmount) AS highest_bid, bidUserId FROM bids WHERE bidAuctionId = :auction_id");
+    $stmt->execute(['auction_id' => $auction_id]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['bidUserId'] ?? 0;
+}
 
 // Place a bid
 function placeBid($auction_id, $user_id, $bid_amount) {
@@ -448,6 +456,14 @@ function getUserByEmail($email) {
     return $user;
 }
 
+function getUserEmail($id) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE userId = :id");
+    $stmt->execute([':id' => $id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $user["userEmail"];
+}
+
 function validateResetToken($user_id, $token) {
     global $pdo;
 
@@ -668,5 +684,33 @@ function prepareChartData($data, $labelsKey, $dataKeys, $truncateLabels = false,
     }
 
     return [$labels, $datasets];
+}
+
+// check the user wheather paginated
+function hasUserPaid($user_id, $auction_id, $highest_bid) {
+    global $pdo; // Assuming you are using PDO
+
+    $query = "SELECT * FROM trans WHERE transUserId = :user_id AND transAuctionId = :auction_id AND transAmount = :highest_bid";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(':auction_id', $auction_id, PDO::PARAM_INT);
+    $stmt->bindParam(':highest_bid', $highest_bid, PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->rowCount() > 0; // Returns true if a matching record exists
+}
+
+// check the user wheather paginated
+function getInvoiceDetails($user_id, $auction_id, $highest_bid) {
+    global $pdo; // Assuming you are using PDO
+
+    $query = "SELECT * FROM trans WHERE transUserId = :user_id AND transAuctionId = :auction_id AND transAmount = :highest_bid";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(':auction_id', $auction_id, PDO::PARAM_INT);
+    $stmt->bindParam(':highest_bid', $highest_bid, PDO::PARAM_STR);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC); // Corrected here to fetch() with PDO::FETCH_ASSOC
+    return $result; // Returns the matching record or false if not found
 }
 ?>

@@ -3,7 +3,7 @@ ob_start();
 session_start();
 include("header.php");
 include("navbar.php");
-
+isAuthenticatedAsAdmin();
 $auctionId = $_GET['auctionId'] ?? null;
 if ($auctionId === null) {
   // Redirect or show an error if auctionId is not passed

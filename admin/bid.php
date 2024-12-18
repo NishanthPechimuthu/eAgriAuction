@@ -4,7 +4,7 @@ ob_start(); // Start output buffering
 
 include("header.php");
 include("navbar.php");
-
+isAuthenticatedAsAdmin();
 // Call the authentication function
 // isAuthenticated();
 

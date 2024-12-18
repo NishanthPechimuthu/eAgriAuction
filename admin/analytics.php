@@ -4,7 +4,7 @@ ob_start();
 
 include "header.php";
 include "navbar.php";
-
+isAuthenticatedAsAdmin();
 ?>
 
 <!DOCTYPE html>

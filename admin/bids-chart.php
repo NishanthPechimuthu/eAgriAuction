@@ -1,4 +1,5 @@
 <?php
+isAuthenticatedAsAdmin();
 // Fetch current page and calculate offset
 $auctionPage = isset($_GET['auctionPage']) ? max(1, (int)$_GET['auctionPage']) : 1;
 $itemsPerPage = 7; // Number of days per page

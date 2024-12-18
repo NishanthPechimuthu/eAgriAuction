@@ -319,16 +319,23 @@ $auction_end_date = date("Y-m-d H:i:s", strtotime($auction['auctionEndDate']));
     </tbody>
   </table>
 
-  <?php if ($is_highest_bidder && $has_ended): ?>
-  <h3 class="mt-4">Payment Instructions</h3>
-  <p>
-    Please pay <strong>&#8377;&nbsp;<?= htmlspecialchars($highest_bid) ?></strong>
-  </p>
-  <p>
-    Once you have ready for the payment, click the button below:
-  </p>
-  <a class="btn btn-primary" href="payment.php?auction_id=<?= htmlspecialchars($auction_id)?>">Payment</a>
-  <?php endif; ?>
+<?php if ($is_highest_bidder && $has_ended): ?>
+    <h3 class="mt-4">Payment Instructions</h3>
+    <p>
+        Please pay <strong>&#8377;&nbsp;<?= htmlspecialchars($highest_bid) ?></strong>
+    </p>
+    <p>
+        Once you are ready to make the payment, click the button below:
+    </p>
+
+    <?php if (hasUserPaid($user_id, $auction_id, $highest_bid)): ?>
+        <!-- Show the option to download the invoice if the user has already paid -->
+        <a class="btn btn-success" href="genrate-invoice.php?auction_id=<?= htmlspecialchars($auction_id) ?>">Download Invoice</a>
+    <?php else: ?>
+        <!-- Otherwise, show the option to go to the payment page -->
+        <a class="btn btn-primary" href="payment.php?auction_id=<?= htmlspecialchars($auction_id) ?>">Make Payment</a>
+    <?php endif; ?>
+<?php endif; ?>
 </div>
 </body>
 </html>

@@ -5,6 +5,7 @@ include("navbar.php");
 
 // Call the authentication function
 // isAuthenticated();
+isAuthenticatedAsAdmin();
 $user_id = $_SESSION["userId"];
 $user = getUserById($user_id);
 

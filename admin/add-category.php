@@ -3,7 +3,7 @@ ob_start(); // Start output buffering
 session_start(); // Start the session
 include("header.php");
 include("navbar.php");
-
+isAuthenticatedAsAdmin();
 // Call the authentication function
 // isAuthenticated();
 

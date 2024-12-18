@@ -1,4 +1,5 @@
 <?php
+isAuthenticatedAsAdmin();
 // Pagination settings
 $limit = 6;  // Number of auctions per page
 $auctionPage = isset($_GET['auctionPage']) ? intval($_GET['auctionPage']) : 1;

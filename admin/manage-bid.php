@@ -5,7 +5,7 @@ ob_start(); // Start output buffering
 include("header.php");
 include("navbar.php");
 // isAuthenticated();
-
+isAuthenticatedAsAdmin();
 $bids = getAllBid();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

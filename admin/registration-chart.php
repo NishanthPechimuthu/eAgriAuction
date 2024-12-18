@@ -1,4 +1,5 @@
 <?php
+isAuthenticatedAsAdmin();
 $userData = getUserRegistrationData();
 $userData = array_reverse($userData); // Reversing to show most recent first
 $recentUserData = array_slice($userData, 0, 6);

@@ -2,6 +2,7 @@
 session_start();
 include("header.php");
 include("navbar.php");
+isAuthenticatedAsAdmin();
 // Retrieve counts for overview
 $totalAuctions = count(getAllAuctions());
 $totalUsers = count(getAllUsers());

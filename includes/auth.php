@@ -18,6 +18,25 @@ if (!function_exists('isAuthenticated')) {
     }
 }
 
+    function isAuthenticatedAsAdmin() {
+        if (isset($_SESSION['userId'])) {
+          $user=getUserById($_SESSION['userId']);
+          $_SESSION['userId'] = $user['userId'];
+          $_SESSION['userName'] = $user['userName'];
+          $_SESSION['userRole'] = $user['userRole'];
+          $_SESSION['userProfileImg'] = $user['userProfileImg'];
+          if($user['userRole']=="admin"){
+          return true;
+          }else{
+            header("Location: ../public/auctions.php");
+            exit();
+          }
+        } else {
+            header("Location: ../public/login.php");
+            exit();
+        }
+    }
+
 // Login function
 function login($username, $password) {
     global $pdo;

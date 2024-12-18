@@ -1,4 +1,5 @@
 <?php
+isAuthenticatedAsAdmin();
 $data = getBidData();
 $bidData = array_reverse($data); // Reversing the data for recent to old
 $recentBidData = array_slice($bidData, 0, 7);

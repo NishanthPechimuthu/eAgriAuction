@@ -2,7 +2,7 @@
 session_start();
 include("header.php");
 include("navbar.php");
-
+isAuthenticatedAsAdmin();
 $auctions = getAllAuctions();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

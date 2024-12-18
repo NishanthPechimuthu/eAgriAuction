@@ -1,4 +1,5 @@
 <?php
+isAuthenticatedAsAdmin();
 $userStatusData = getUserStatusData();
 $userStatusLabels = [];
 $userStatusCounts = [];

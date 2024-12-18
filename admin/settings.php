@@ -4,6 +4,7 @@ session_start();
 include("header.php");
 include("navbar.php");
 // isAuthenticated();
+isAuthenticatedAsAdmin();
 ?>
 <!DOCTYPE html>
 <html lang="en">

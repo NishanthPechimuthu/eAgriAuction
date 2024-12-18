@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <? include_once("../assets/link.html"); ?>
   <link rel="stylesheet" href="
   ../assets/style.css">
-  <title>Boostrap Login | Ludiflex</title>
+  <title>Login</title>
 </head>
 <body>
 

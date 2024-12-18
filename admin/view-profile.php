@@ -4,6 +4,7 @@ session_start();
 include("header.php");
 include("navbar.php");
 // isAuthenticated();
+isAuthenticatedAsAdmin();
 $userId=base64_decode($_GET["id"]);
 $users = getUserById($userId);
 ?>

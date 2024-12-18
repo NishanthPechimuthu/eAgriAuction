@@ -4,7 +4,7 @@ ob_start(); // Start output buffering
 
 include "header.php";
 include "navbar.php";
-
+isAuthenticatedAsAdmin();
 $users = getAllUsers();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
