@@ -345,12 +345,12 @@ function getTopBidders($auction_id, $limit = 10) {
 }
 
 //Update user profile
-function updateUserProfile($user_id, $fname, $lname, $upi_id, $image, $phone,$address) {
+function updateUserProfile($user_id, $fname, $lname, $account_no, $image, $phone,$address) {
     global $pdo;
     $stmt = $pdo->prepare("UPDATE users 
                            SET userFirstName = :fname, 
                                userLastName = :lname, 
-                               userUpiId = :upi_id, 
+                               userAccountNo = :account_no, 
                        userProfileImg = :image,
                        userPhone = :phone, 
                        userAddress = :address 
@@ -359,7 +359,7 @@ function updateUserProfile($user_id, $fname, $lname, $upi_id, $image, $phone,$ad
     $result = $stmt->execute([
         'fname' => $fname,
         'lname' => $lname,
-        'upi_id' => $upi_id,
+        'account_no' => $account_no,
         'image' => $image,
         'phone' => $phone,
         'address' => $address,

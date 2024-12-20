@@ -12,7 +12,7 @@ $user = getUserById($user_id);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $fname = $_POST['fname'];
   $lname = $_POST['lname'];
-  $upi_id = $_POST['upi_id'];
+  $account_no = $_POST['account_no'];
   $image = $user['userProfileImg']; // Default to current image
   $phone = $_POST['phone'];
   $address = $_POST['address'];
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   // Update profile details
-  if (updateUserProfile($user_id, $fname, $lname, $upi_id, $image, $phone, $address)) {
+  if (updateUserProfile($user_id, $fname, $lname, $account_no, $image, $phone, $address)) {
     echo '
         <p class="alert alert-success alert-dismissible fade show d-flex align-items-center"
            role="alert"  data-bs-dismiss="alert"
@@ -102,15 +102,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
           <div class="mb-3">
             <label class="form-label" for="email">E-Mail</label>
-            <input type="email" name="email" id="email" value="<?= htmlspecialchars($user['userEmail']) ?>" disabled class="form-control">
+            <input type="email" name="email" id="email" value="<?= htmlspecialchars($user['userEmail']??null) ?>" disabled class="form-control">
           </div>
           <div class="mb-3">
-            <label class="form-label" for="upi_id">UPI ID</label>
-            <input type="text" name="upi_id" id="upi_id" value="<?= htmlspecialchars($user['userUpiId']) ?>" required class="form-control">
+            <label class="form-label" for="account_no">Account No</label>
+            <input 
+                type="text" 
+                name="account_no" 
+                id="account_no" 
+                value="<?= htmlspecialchars($user['userAccountNo']) ?>" 
+                required 
+                class="form-control">
+            <div id="accountFeedback" class="text-danger mt-1"></div>
           </div>
           <div class="mb-3">
             <label class="form-label" for="phone">Phone</label>
-            <input type="tel" name="phone" id="phone" value="<?= htmlspecialchars($user['userPhone']) ?>" required class="form-control" placeholder="+91 xxx-xxx-xxxx">
+            <input type="tel" name="phone" id="phone" value="<?= htmlspecialchars($user['userPhone']??null) ?>" required class="form-control" placeholder="+91 xxx-xxx-xxxx">
           </div>
           <div class="mb-3">
             <label class="form-label" for="address">Address</label>
@@ -200,6 +207,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           };
           reader.readAsDataURL(blob);
         }, "image/webp");
+      }
+    });
+  </script>
+  <script>
+    const accountInput = document.getElementById("account_no");
+    const feedbackDiv = document.getElementById("accountFeedback");
+  
+    accountInput.addEventListener("input", function () {
+      const accountNumber = accountInput.value;
+  
+      if (accountNumber.length < 9 || accountNumber.length > 18) {
+        feedbackDiv.textContent = "Account number must be between 9 to 18 characters.";
+      } else {
+        // Call AJAX to check for additional validation (optional)
+        feedbackDiv.textContent = ""; // Clear feedback
+      }
+    });
+  
+    // Optional: AJAX example for additional backend validation
+    accountInput.addEventListener("blur", function () {
+      const accountNumber = accountInput.value;
+      if (accountNumber.length >= 9 && accountNumber.length <= 18) {
+        fetch('validate-account.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ account_no: accountNumber })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (!data.valid) {
+              feedbackDiv.textContent = data.message || "Invalid account number.";
+            } else {
+              feedbackDiv.textContent = ""; // Clear feedback
+            }
+          })
+          .catch(error => {
+            console.error("Error:", error);
+          });
       }
     });
   </script>

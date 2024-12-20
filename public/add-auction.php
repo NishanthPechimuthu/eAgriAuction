@@ -7,8 +7,8 @@ include("navbar.php");
 $categories = getCategories();
 // Call the authentication function
 isAuthenticated();
-$UPIDetail = getUserUpiId($_SESSION["userId"]);
-if ($UPIDetail === NULL) {
+$AccountNo = getUserAccountNo($_SESSION["userId"]);
+if ($AccountNo === NULL) {
   header("Location: update-profile.php");
   exit();
 }
