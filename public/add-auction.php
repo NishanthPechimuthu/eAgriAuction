@@ -17,6 +17,9 @@ if ($AccountNo === NULL) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Sanitize user inputs
   $title = htmlspecialchars(trim($_POST['title']));
+  $product_type=$_POST["product_type"];
+  $product_quantity=$_POST["product_quantity"];
+  $product_unit=$_POST["product_unit"];
   $start_price = filter_var($_POST['start_price'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
   $start_time = $_POST['start_time'];
   $end_date = $_POST['end_date'];
@@ -45,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (file_put_contents($targetFile, $croppedImageData)) {
       // If save successful, call function to add auction
       $user_id = $_SESSION["userId"];
-      $result = addAuction($title, $start_price, $start_time, $end_date, $category_id, $address, $description, $uniqueName, $user_id);
+      $result = addAuction($title, $start_price, $start_time, $end_date, $category_id, $address, $description, $uniqueName, $user_id, $product_type, $product_quantity, $product_unit);
 
       if (strpos($result, "Auction added successfully") !== false) {
         header("Location: manage-auction.php");
@@ -141,6 +144,27 @@ error_reporting(E_ALL);
               <?php endif; ?>
               <input type="hidden" name="category" id="selectedCategory" required>
             </div>
+          </div>
+          <div class="mb-3">
+            <label for="product_type" class="form-label">Product Type</label>
+          <select id="product_type" name="product_type" class="form-control" required>
+            <option value="" disabled selected>Select</option>
+            <option value="organic">ORGANIC</option>
+            <option value="hybrid">HYBRID</option>
+          </select>
+          </div>
+          <div class="mb-3">
+            <label for="product_quantity" class="form-label">Quantity</label>
+            <input type="number" id="product_quantity" name="product_quantity"  class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="product_unit" class="form-label">Quantity Type</label>
+            <select id="product_unit" name="product_unit" class="form-control" required>
+            <option value="" disabled selected>Select</option>
+              <option value="kg">Kg</option>
+              <option value="ton">Ton</option>
+              <option value="nos">Nos</option>
+            </select>
           </div>
           <div class="mb-3">
             <label for="start_price" class="form-label">Starting Price</label>

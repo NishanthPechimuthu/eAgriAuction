@@ -91,28 +91,12 @@ ob_end_flush(); // End buffering and flush output
                         <th>Phone</th>
                         <th>Email</th>
                         <th>Address</th>
-                        <th>UPI ID</th>
+                        <th>Account No</th>
                         <th>View</th>
                         <th>Suspend</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>S/No</th>
-                        <th>Name</th>
-                        <th>Profile</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Address</th>
-                        <th>UPI ID</th>
-                        <th>View</th>
-                        <th>Suspend</th>
-                        <th>Delete</th>
-                    </tr>
-                </tfoot>
                 <tbody>
                     <?php
                     $counter = 1;
@@ -128,10 +112,10 @@ ob_end_flush(); // End buffering and flush output
                                 </td>
                                 <td>" . ($user['userFirstName'] ?? 'NULL') . "</td>
                                 <td>" . ($user['userLastName'] ?? 'NULL') . "</td>
-                                <td>" . ("<a href='tel:".$user['userPhone']."' class='text-dark text-decoration-none' >".$user['userPhone'] ."</a>"?? 'NULL') . "</td>
+                                <td>" . ("<a href='tel:".$user['userPhone']."' class='text-dark text-decoration-none' >".$user['userPhone'] ?? 'NULL' ."</a>") . "</td>
                                 <td><a href='mailto:".$user['userEmail']."' class='text-dark text-decoration-none' >".$user['userEmail']."</a></td>
                                 <td>" . ($user['userAddress'] ?? 'NULL') . "</td>
-                                <td>" . ("<a class='text-decoration-none text-dark' href='upi://pay?pa=".$user['userUpiId']."'>".$user['userUpiId']."</a>" ?? 'NULL') . "</td>
+                                <td>" . ($user['userAccountNo']??'NULL') . "</td>
                                 <td>
                                     <a class='btn btn-primary fw-bold' href='./view-profile.php?id=" . base64_encode($user['userId']) . "'>View</a>
                                 </td>

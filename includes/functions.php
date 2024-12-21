@@ -164,7 +164,7 @@ function getUserName($user_id) {
 // Fetch all auctions
 function getAllAuctions() {
     global $pdo;
-    $stmt = $pdo->prepare("SELECT * FROM auctions");
+    $stmt = $pdo->prepare("SELECT * FROM auctions ORDER BY createdAt DESC");
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -179,7 +179,7 @@ function getUsersAuctions() {
     }
 
     try {
-        $sql = "SELECT * FROM auctions WHERE auctionCreatedBy = :user_id AND auctionStatus <> 'suspend'";
+        $sql = "SELECT * FROM auctions WHERE auctionCreatedBy = :user_id AND auctionStatus <> 'suspend' ORDER BY createdAt DESC";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
@@ -207,14 +207,20 @@ function getInactivateUsers() {
 }
 
 // Add a new auction
-function addAuction($title, $start_price, $start_time, $end_date, $category_id, $address, $description, $product_img, $user_id) {
+function addAuction($title, $start_price, $start_time, $end_date, $category_id, $address, $description, $uniqueName, $user_id, $product_type, $product_quantity, $product_unit) {
     global $pdo;
 
     try {
         // Prepare the SQL insert statement with correct column names
         $stmt = $pdo->prepare("INSERT INTO auctions 
-            (auctionTitle, auctionStartPrice, auctionStartDate, auctionEndDate, auctionAddress, auctionDescription, auctionCategoryId, auctionProductImg, auctionCreatedBy) 
-            VALUES (:title, :start_price, :start_time, :end_date, :address, :description, :category_id, :product_img, :user_id)");
+            (auctionTitle, auctionStartPrice, auctionStartDate, auctionEndDate, auctionAddress, auctionDescription, auctionCategoryId, auctionProductImg, auctionCreatedBy,
+              auctionProductType,
+              auctionProductQuantity,
+              auctionProductUnit) 
+            VALUES (:title, :start_price, :start_time, :end_date, :address, :description, :category_id, :product_img, :user_id,
+              :product_type,
+              :product_quantity,
+              :product_unit)");
 
         // Execute the query with the correct named parameters
         $success = $stmt->execute([
@@ -225,8 +231,11 @@ function addAuction($title, $start_price, $start_time, $end_date, $category_id, 
             'address' => $address,
             'description' => $description,
             'category_id' => $category_id, // Note: Changed from 'category_name' to 'category_id'
-            'product_img' => $product_img,
-            'user_id' => (int)$user_id // Ensure user_id is an integer
+            'product_img' => $uniqueName,
+            'user_id' => (int)$user_id,
+            'product_type' => $product_type, 
+            'product_quantity' => $product_quantity, 
+            'product_unit' => $product_unit 
         ]);
 
         // Check if the query executed successfully
@@ -238,7 +247,7 @@ function addAuction($title, $start_price, $start_time, $end_date, $category_id, 
 
     } catch (PDOException $e) {
         // Catch any database errors and return the error message
-        return "Database error: " . $e->getMessage();
+        return "Img" .$product_img."End Database error: " . $e->getMessage();
     }
 }
 
@@ -370,7 +379,7 @@ function updateUserProfile($user_id, $fname, $lname, $account_no, $image, $phone
 }
 
 // Update auction details
-function updateAuction($auctionId, $title, $start_price, $start_time, $end_date, $category_id, $address, $description, $image, $status) {
+function updateAuction($auctionId, $title, $start_price, $start_time, $end_date, $category_id, $address, $description, $oldImage, $status, $product_type, $product_quantity, $product_unit, $newImage = null) {
     global $pdo;
 
     // Validate that the status is one of the valid ENUM values
@@ -378,6 +387,9 @@ function updateAuction($auctionId, $title, $start_price, $start_time, $end_date,
     if (!in_array($status, $validStatuses)) {
         return "Invalid status value. Allowed values are 'activate', 'deactivate', or 'suspend'.";
     }
+
+    // If a new image is uploaded, use it; otherwise, retain the old image
+    $image = $newImage ? $newImage : $oldImage;
 
     // Prepare the SQL query to update the auction details
     $sql = "UPDATE auctions 
@@ -389,7 +401,10 @@ function updateAuction($auctionId, $title, $start_price, $start_time, $end_date,
                 auctionAddress = :address, 
                 auctionDescription = :description, 
                 auctionProductImg = :image, 
-                auctionStatus = :status
+                auctionStatus = :status,
+                auctionProductType = :product_type,
+                auctionProductQuantity = :product_quantity,
+                auctionProductUnit = :product_unit
             WHERE auctionId = :auctionId";
 
     // Prepare and execute the statement
@@ -404,6 +419,9 @@ function updateAuction($auctionId, $title, $start_price, $start_time, $end_date,
         ':description' => $description,
         ':image' => $image,
         ':status' => $status, // Valid ENUM value: 'activate', 'deactivate', 'suspend'
+        ':product_type' => $product_type,
+        ':product_quantity' => $product_quantity,
+        ':product_unit' => $product_unit,
         ':auctionId' => $auctionId
     ]);
 

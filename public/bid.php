@@ -55,8 +55,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$has_ended) {
     $user_id = getUserFromSession();
     if (placeBid($auction_id, $user_id, $bid_amount)) {
       // Redirect after placing the bid
-      header("Location: bid.php?id=$auction_id");
-      exit(); // Make sure to call exit() after header redirection to prevent further script execution
+            echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+                  <script>
+                      $(document).ready(function() {
+                          Swal.fire({
+                              title: 'Your Bid has been successfully.',
+                              icon: 'success',
+                              confirmButtonText: 'OK',
+                              confirmButtonColor: '#28a745',
+                              allowOutsideClick: false
+                          }).then((result) => {
+                              if (result.isConfirmed) {
+                                  window.location.href = 'bid.php?id=".$auction_id."'; // Redirect to another page
+                              }
+                          });
+                      });
+                  </script>";
     } else {
       $error_message = "Failed to place bid.";
     }
@@ -190,7 +204,7 @@ $auction_end_date = date("Y-m-d H:i:s", strtotime($auction['auctionEndDate']));
                 </th>
               </tr>
               <tr>
-                <th colspan="1" width="100px">Title:</th>
+                <th colspan="1" width="100px"> Title:</th>
                 <td colspan="3">
                   <div class="title-cell">
                     <?= htmlspecialchars($auction['auctionTitle']) ?>
@@ -201,20 +215,28 @@ $auction_end_date = date("Y-m-d H:i:s", strtotime($auction['auctionEndDate']));
                 <th colspan="4" style="text-align: center;">Price (&#8377;)</th>
               </tr>
               <tr>
-                <th colspan="2" width="200px" style="text-align: center;">Base:</th>
-                <th colspan="2" width="200px" style="text-align: center;">High:</th>
+                <th colspan="2" width="200px" style="text-align: center;"><i class="fa fa-coins"></i>&nbsp; Base</th>
+                <th colspan="2" width="200px" style="text-align: center;"><i class="fa fa-line-chart"></i>&nbsp; High</th>
               </tr>
               <tr>
                 <td colspan="2" style="text-align: center;">&#8377;<?= htmlspecialchars($starting_price) ?></td>
                 <td colspan="2" style="text-align: center;">&#8377;<?= htmlspecialchars(getHighestBid($auction['auctionId'])) ?></td>
               </tr>
               <tr>
-                <th colspan="1" width="100px">Time:</th>
+                <th colspan="2" width="200px" style="text-align: center;"><i class="fa fa-balance-scale"></i>&nbsp; Quantity</th>
+                <th colspan="2" width="200px" style="text-align: center;"><i class="fa fa-vial"></i>&nbsp; Product Type</th>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: center;">&#8377;<?= htmlspecialchars($auction["auctionProductQuantity"]." ".$auction["auctionProductUnit"]) ?></td>
+                <td colspan="2" style="text-align: center;"><?= htmlspecialchars($auction["auctionProductType"]) ?></td>
+              </tr>
+              <tr>
+                <th colspan="1" width="100px"><i class="fa fa-hourglass"></i>&nbsp;Time</th>
                 <td colspan="3"><span id="countdown"></span></td>
               </tr>
               <tr>
-                <th colspan="2">Address</th>
-                <th colspan="2">Category</th>
+                <th colspan="2"><i class="fa fa-map-marker-alt"></i>&nbsp; Address</th>
+                <th colspan="2"><i class="fa fa-palette"></i>&nbsp; Category</th>
               </tr>
               <tr>
                 <td colspan="2">
@@ -229,7 +251,7 @@ $auction_end_date = date("Y-m-d H:i:s", strtotime($auction['auctionEndDate']));
                 </td>
               </tr>
               <tr>
-                <th colspan="4">Description</th>
+                <th colspan="4"> Description</th>
               </tr>
               <tr>
                 <td colspan="4">

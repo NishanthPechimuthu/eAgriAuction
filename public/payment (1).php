@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       $(document).ready(function() {
                           Swal.fire({
                               title: 'Payment Successful!',
-                              text: 'Transaction ID: ".htmlspecialchars(explode('_', explode('.', $transaction_tracking_id)[0])[1])."\\nAmount Paid: ₹$highest_bid\\n',
+                              text: 'Transaction ID: $transaction_tracking_id\\nAmount Paid: ₹$highest_bid\\n',
                               icon: 'success',
                               confirmButtonText: 'OK',
                               confirmButtonColor: '#28a745',
@@ -116,7 +116,7 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
         $mail->Port = 587;
 
         // Sender and recipient settings
-        $mail->setFrom('22ct19nishanth@gmail.com', 'no-replay@eagri.ct.ws');
+        $mail->setFrom('22ct19nishanth@gmail.com', 'e-Agri Auction');
         $mail->addAddress($rUser["userEmail"]); // Recipient email
 
         // Email content
@@ -230,7 +230,6 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
         </p>
         
     </div>
-    <p>eAgri Auction</p>
 </body>
 </html>
         ';
@@ -267,7 +266,7 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
         $mail->Port = 587;
 
         // Sender and recipient settings
-        $mail->setFrom('22ct19nishanth@gmail.com', 'no-replay@eagri.ct.ws');
+        $mail->setFrom('22ct19nishanth@gmail.com', 'e-Agri Auction');
         $mail->addAddress($sUser["userEmail"]); // Recipient email
 
         // Email content
@@ -380,7 +379,6 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
             We appreciate your trust in our services.
         </p>
     </div>
-    <p>eAgri Auction</p>
 </body>
 </html>
         ';
@@ -416,10 +414,42 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
         <title>Payment</title>
         <? include("../assets/link.html"); ?>
         <style>
-            /* Your existing styles */
+            ::-webkit-scrollbar {
+                width: 8px;
+            }
+            /* Track */
+            ::-webkit-scrollbar-track {
+                background: #f1f1f1;
+            }
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                background: #888;
+            }
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+            body {
+                background: #f5f5f5;
+            }
+            .rounded {
+                border-radius: 1rem;
+            }
+            .nav-pills .nav-link {
+                color: #555;
+            }
+            .nav-pills .nav-link.active {
+                color: white;
+            }
+            input[type="radio"] {
+                margin-right: 5px;
+            }
+            .bold {
+                font-weight: bold;
+            }
         </style>
     </head>
-    <body class='snippet-body'>
+    <body className='snippet-body'>
         <div class="container py-5">
             <div class="row mb-4">
                 <div class="col-lg-8 mx-auto text-center">
@@ -446,14 +476,14 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
                                             <label for="username">
                                                 <h6>Card Owner</h6>
                                             </label> 
-                                            <input type="text" name="username" placeholder="Card Owner Name" required class="form-control" id="username"> 
+                                            <input type="text" name="username" placeholder="Card Owner Name" required class="form-control"> 
                                         </div>
                                         <div class="form-group"> 
                                             <label for="cardNumber">
                                                 <h6>Card number</h6>
                                             </label>
                                             <div class="input-group"> 
-                                                <input type="text" name="cardNumber" placeholder="Valid card number" class="form-control" required id="cardNumber">
+                                                <input type="text" name="cardNumber" placeholder="Valid card number" class="form-control" required>
                                                 <div class="input-group-append"> 
                                                     <span class="input-group-text text-muted"> 
                                                         <i class="fab fa-cc-visa mx-1"></i> 
@@ -462,7 +492,6 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
                                                     </span> 
                                                 </div>
                                             </div>
-                                            <div id="cardNumberError" class="text-danger"></div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-8">
@@ -471,21 +500,19 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
                                                         <h6>Expiration Date</h6>
                                                     </label>
                                                     <div class="input-group"> 
-                                                        <input type="number" placeholder="MM" name="expiryMonth" class="form-control" required id="expiryMonth"> 
-                                                        <input type="number" placeholder="YY" name="expiryYear" class="form-control" required id="expiryYear"> 
+                                                        <input type="number" placeholder="MM" name="expiryMonth" class="form-control" required> 
+                                                        <input type="number" placeholder="YY" name="expiryYear" class="form-control" required> 
                                                     </div>
                                                 </div>
-                                                <div id="expiryDateError" class="text-danger"></div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group mb-4"> 
                                                     <label data-toggle="tooltip" title="Three digit CV code on the back of your card">
                                                         <h6>CVV <i class="fa fa-question-circle d-inline"></i></h6>
                                                     </label> 
-                                                    <input type="text" name="cvv" required class="form-control" id="cvv"> 
+                                                    <input type="text" name="cvv" required class="form-control"> 
                                                 </div>
                                             </div>
-                                            <div id="cvvError" class="text-danger"></div>
                                         </div>
                                         <button type="submit" class="btn btn-success btn-block fw-bolder"> Confirm Payment </button>
                                     </form>
@@ -497,82 +524,7 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
             </div>
         </div>
         <script type='text/javascript'>$(function() {
-            $('[data-toggle="tooltip"]').tooltip()
+          $('[data-toggle="tooltip"]').tooltip()
         })</script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const form = document.querySelector("form");
-                const cardNumberInput = document.getElementById("cardNumber");
-                const expiryMonthInput = document.getElementById("expiryMonth");
-                const expiryYearInput = document.getElementById("expiryYear");
-                const cvvInput = document.getElementById("cvv");
-
-                // Validation function for Card Number
-                function validateCardNumber() {
-                    const cardNumber = cardNumberInput.value.trim();
-                    const cardNumberError = document.getElementById("cardNumberError");
-
-                    // Basic card number length validation (13-19 digits)
-                    if (cardNumber.length < 13 || cardNumber.length > 19) {
-                        cardNumberError.textContent = "Please enter a valid card number (13-19 digits).";
-                        return false;
-                    } else {
-                        cardNumberError.textContent = "";
-                        return true;
-                    }
-                }
-
-                // Validation function for Expiry Date
-                function validateExpiryDate() {
-                    const expiryMonth = parseInt(expiryMonthInput.value);
-                    const expiryYear = parseInt(expiryYearInput.value);
-                    const expiryDateError = document.getElementById("expiryDateError");
-
-                    const currentDate = new Date();
-                    const currentMonth = currentDate.getMonth() + 1; // months are 0-indexed
-                    const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits of the year
-
-                    if (expiryMonth < 1 || expiryMonth > 12 || expiryYear < currentYear || (expiryYear === currentYear && expiryMonth < currentMonth)) {
-                        expiryDateError.textContent = "Please enter a valid expiration date (MM/YY).";
-                        return false;
-                    } else {
-                        expiryDateError.textContent = "";
-                        return true;
-                    }
-                }
-
-                // Validation function for CVV
-                function validateCVV() {
-                    const cvv = cvvInput.value.trim();
-                    const cvvError = document.getElementById("cvvError");
-
-                    if (!/^\d{3}$/.test(cvv)) {
-                        cvvError.textContent = "CVV must be 3 digits.";
-                        return false;
-                    } else {
-                        cvvError.textContent = "";
-                        return true;
-                    }
-                }
-
-                // Event listeners for live validation
-                cardNumberInput.addEventListener("input", validateCardNumber);
-                expiryMonthInput.addEventListener("input", validateExpiryDate);
-                expiryYearInput.addEventListener("input", validateExpiryDate);
-                cvvInput.addEventListener("input", validateCVV);
-
-                // Form submission validation
-                form.addEventListener("submit", function(event) {
-                    // Perform validation before submitting
-                    const isCardValid = validateCardNumber();
-                    const isExpiryValid = validateExpiryDate();
-                    const isCVVValid = validateCVV();
-
-                    if (!(isCardValid && isExpiryValid && isCVVValid)) {
-                        event.preventDefault(); // Prevent form submission if validation fails
-                    }
-                });
-            });
-        </script>
     </body>
 </html>

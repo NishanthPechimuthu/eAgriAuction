@@ -31,30 +31,40 @@ $auctions = getActiveAuctions();
           <div class="col mb-4">
             <div class="card shadow">
               <div class="position-relative">
-                <!-- Badge for category -->
-                <span class="badge bg-info position-absolute top-0 start-0 m-2">
-                  <i class="bi bi-tag"></i> <?= $categ = getCategoryById($auction["auctionCategoryId"]); ?>
-                </span>
-
+                <!-- Container for the badges -->
+                <div class="d-flex justify-content-between position-absolute top-0 start-0 w-100 p-2">
+                  <!-- Badge for category -->
+                  <span class="badge bg-info">
+                    <i class="bi bi-tag"></i> <?= $categ = getCategoryById($auction["auctionCategoryId"]); ?>
+                  </span>
+                </div>
+            
                 <img class="shadow-sm card-img-top rounded-2" src="../images/products/<?=$auction['auctionProductImg'] ?>" alt="Product Image">
               </div>
-
               <div class="card-body">
-                <h5 class="card-title text-primary mt-1">
-                  <?php echo substr(htmlspecialchars($auction['auctionTitle']), 0, 30); ?>...
-                </h5>
                 <table class="table table-sm table-borderless">
                   <tr>
-                    <th>Base:</th>
-                    <td><?="<b>&#8377;&nbsp;</b>" . htmlspecialchars($auction['auctionStartPrice']) ?></td>
-                    <td></td>
-                    <th>High:</th>
-                    <td><?='<b>&#8377;&nbsp;</b>' . htmlspecialchars(getHighestBid($auction['auctionId']) ? getHighestBid($auction['auctionId']) : "not yet.") ?></td>
+                    <td colspan="4">
+                      <h5 class="card-title text-primary mt-1">
+                        <?php 
+                          $title = htmlspecialchars($auction['auctionTitle']);
+                          echo strlen($title) > 30 ? substr($title, 0, 30) . "..." : $title; 
+                        ?>
+                      </h5>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"><i class="fa fa-coins"></i>&nbsp;&nbsp;<b>&#8377;&nbsp;</b><?= htmlspecialchars($auction['auctionStartPrice']) ?></td>
+                    <td colspan="2"><i class="fa fa-line-chart"></i>&nbsp;&nbsp;<b>&#8377;&nbsp;</b><?= (getHighestBid($auction["auctionId"]) === 0) ? 'not yet.' : getHighestBid($auction["auctionId"]);?></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"><i class="fa fa-balance-scale"></i>&nbsp;&nbsp;<?="<b>&nbsp;</b>" . htmlspecialchars($auction['auctionProductQuantity'])." ".htmlspecialchars($auction['auctionProductUnit']) ?></td>
+                    <td colspan="2"><i class="fa fa-vial"></i>&nbsp;&nbsp;<?="&nbsp;" . htmlspecialchars($auction['auctionProductType'])?></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"><i class="fa fa-hourglass-start"></i>&nbsp;&nbsp;<?= htmlspecialchars($auction['auctionEndDate']) ?></td>
                   </tr>
                 </table>
-                <p>
-                  <strong>End:</strong> <?= htmlspecialchars($auction['auctionEndDate']) ?>
-                </p>
                 <a href="bid.php?id=<?= $auction['auctionId'] ?>" class="btn btn-primary">Place Bid</a>
               </div>
             </div>

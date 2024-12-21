@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } else {
     // No cropped image uploaded, use the old image or handle accordingly
     $oldImage = !empty($auction['auctionProductImg']) ? $auction['auctionProductImg'] : null;
-    $result = updateAuction($auctionId, $title, $start_price, $start_time, $end_date, $category_id, $address, $description, $oldImage, $status, $product_type, $product_quantity, $product_unit);
+    $result = updateAuction($auctionId, $title, $start_price, $start_time, $end_date, $category_id, $address, $description, $oldImage, $status);
     if (strpos($result, "Auction updated successfully") !== false) {
       echo '
         <p class="alert alert-success alert-dismissible fade show d-flex align-items-center"

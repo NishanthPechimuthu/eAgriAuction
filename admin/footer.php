@@ -1,13 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <? include_once("../assets/link.html"); ?>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+    footer {
+      margin-top: auto;
+    }
+  </style>
 </head>
 <body>
-<div class="d-flex flex-column min-vh-100">
+  <div class="d-flex flex-column flex-grow-1">
+    <!-- Content goes here -->
+  </div>
+
   <!-- Footer -->
   <footer class="container-fluid bg-dark text-white pt-5 pb-4 px-5">
-    <div class=" text-left text-md-left">
+    <div class="text-left text-md-left">
       <div class="row justify-content-start">
         <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
           <h5 class="text-uppercase mb-4 font-weight-bold text-success">e-Agri Auction</h5>
@@ -27,9 +41,9 @@
         </div>
         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
           <h5 class="text-uppercase mb-4 font-weight-bold text-success">Contact</h5>
-          <p><i class="fas fa-home"></i>&nbsp;&nbsp;<a class="text-decoration-none text-white"  href="https://www.google.com/maps/dir/?api=1&destination=M6H6%2B5F9%2C+Somavarapatti%2C+Tamil+Nadu">Tiruppur, Tamil Nadu, India - 642205</a></p>
-          <p><i class="fas fa-envelope"></i>&nbsp;&nbsp;<a class="text-decoration-none text-white" href="mailto:nishanthpechimuthu@gmail.com">nishanthpechimuthu@gmail.com</a></p>
-          <p><i class="fas fa-phone"></i>&nbsp;&nbsp;<a class="text-decoration-none text-white" href="tel:+918015864344">+91 8015864344</a></p>
+          <p><i class="fas fa-home mr-3"></i>&nbsp;&nbsp;<a class="text-decoration-none text-white"  href="https://www.google.com/maps/dir/?api=1&destination=M6H6%2B5F9%2C+Somavarapatti%2C+Tamil+Nadu">Tiruppur, Tamil Nadu, India - 642205</a></p>
+          <p><i class="fas fa-envelope mr-3"></i>&nbsp;&nbsp;<a class="text-decoration-none text-white" href="mailto:nishanthpechimuthu@gmail.com">nishanthpechimuthu@gmail.com</a></p>
+          <p><i class="fas fa-phone mr-3"></i>&nbsp;&nbsp;<a class="text-decoration-none text-white" href="tel:+918015864344">+91 8015864344</a></p>
         </div>
       </div>
       <hr class="mb-4">
@@ -44,6 +58,5 @@
       </div>
     </div>
   </footer>
-</div>
 </body>
 </html>

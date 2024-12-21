@@ -1,13 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <? include_once("../assets/link.html"); ?>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+    footer {
+      margin-top: auto;
+    }
+  </style>
 </head>
 <body>
-<div class="d-flex flex-column min-vh-100">
+  <div class="d-flex flex-column flex-grow-1">
+    <!-- Content goes here -->
+  </div>
+
   <!-- Footer -->
   <footer class="container-fluid bg-dark text-white pt-5 pb-4 px-5">
-    <div class=" text-left text-md-left">
+    <div class="text-left text-md-left">
       <div class="row justify-content-start">
         <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
           <h5 class="text-uppercase mb-4 font-weight-bold text-success">e-Agri Auction</h5>
@@ -44,6 +58,5 @@
       </div>
     </div>
   </footer>
-</div>
 </body>
 </html>

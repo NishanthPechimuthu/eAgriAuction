@@ -9,6 +9,7 @@ if (!function_exists('isAuthenticated')) {
           $_SESSION['userId'] = $user['userId'];
           $_SESSION['userName'] = $user['userName'];
           $_SESSION['userRole'] = $user['userRole'];
+          $_SESSION['userEmail'] = $user['userEmail'];
           $_SESSION['userProfileImg'] = $user['userProfileImg'];
           return true;
         } else {
