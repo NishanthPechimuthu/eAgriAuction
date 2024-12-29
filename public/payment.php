@@ -174,7 +174,7 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-5">
 <h3>Order Confirmation</h3>
 <p>Dear <b>' . htmlspecialchars($sUser["userFirstName"]) . '&nbsp;' . htmlspecialchars($sUser["userLastName"]) . '</b>,</p>
 <p>Your payment for the order has been successfully processed. Below are the details:</p>
@@ -420,7 +420,7 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
         </style>
     </head>
     <body class='snippet-body'>
-        <div class="container py-5">
+        <div class="container py-5 mt-5">
             <div class="row mb-4">
                 <div class="col-lg-8 mx-auto text-center">
                     <h1 class="display-6">Payment for Auction #<?php echo $auction_id; ?></h1>

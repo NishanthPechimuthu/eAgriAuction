@@ -8,7 +8,7 @@ function setUserSession($userId) {
     $_SESSION['$userId'] = $userId;
 }
 
-// Get user ID from session
+// user ID from session
 function getUserFromSession() {
     if (isset($_SESSION["userId"])) {
         return $_SESSION["userId"]; 
@@ -89,6 +89,25 @@ function getAllBid() {
     return $result; // Return the result to be used elsewhere
 }
 
+//Get reviews
+function getReviews() {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM reviews WHERE reviewStatus = :status");
+    $status = "activate"; // Define the status value
+    $stmt->bindParam(':status', $status, PDO::PARAM_STR); // Correct parameter binding
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $result; // Return the result to be used elsewhere
+}
+
+//Get Heroes
+function getAllHeroes() {
+  global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM heroes");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 // Get the highest bid for a specific auction
 function getHighestBid($auction_id) {
     global $pdo;
@@ -152,13 +171,22 @@ function getUserById($user_id) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// Fetch user data by ID
+// Fetch user Name by ID
 function getUserName($user_id) {
     global $pdo;
     $stmt = $pdo->prepare("SELECT * FROM users WHERE userId = :user_id");
     $stmt->execute(['user_id' => $user_id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     return $result["userName"];
+}
+
+// Fetch user Image by ID
+function getUserImage($user_id) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE userId = :user_id");
+    $stmt->execute(['user_id' => $user_id]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result["userProfileImg"];
 }
 
 // Fetch all auctions
@@ -480,6 +508,14 @@ function getUserEmail($id) {
     $stmt->execute([':id' => $id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     return $user["userEmail"];
+}
+
+function getUserFullName($id) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE userId = :id");
+    $stmt->execute([':id' => $id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $user["userFirstName"]." ".$user["userLastName"];
 }
 
 function validateResetToken($user_id, $token) {

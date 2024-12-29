@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <div class="container mt-5">
+    <div style="margin-top:100px;"class="container">
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-cogs me-1"></i> Manage Auctions

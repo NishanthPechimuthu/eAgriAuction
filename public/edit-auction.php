@@ -137,7 +137,7 @@ error_reporting(E_ALL);
   <? include_once("../assets/link.html"); ?>
 </head>
 <body>
-  <div class="container py-5">
+  <div class="container py-5 mt-5">
     <div class="card mb-4">
       <div class="card-header">
         <i class="bi bi-pencil-square"></i>&nbsp;

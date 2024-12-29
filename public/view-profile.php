@@ -17,7 +17,7 @@ $users = getUserById($userId);
   <title>Profile</title>
 </head>
 <body>
-  <div class="container py-5">
+  <div class="container py-5 mt-5">
     <div class="card mb-4">
       <div class="card-header">
         <i class="bi bi-person-circle"></i>&nbsp;
