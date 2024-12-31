@@ -7,14 +7,13 @@ include("navbar.php");
 // Call the authentication function
 isAuthenticated();
 
-// Retrieve user ID from the session
-$user_id = $_SESSION['user_id']; // Assuming 'user_id' is stored in the session
-$auctions = getUsersAuctions();
+// Retrieve heroes from the database
+$heroes = getAllHeroes(); // Assume `getAllHeroes()` retrieves all heroes from the database
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['delete'])) {
-    deleteAuction($_POST['auction_id']);
-    header("Location: manage-auction.php");
+    deleteHero($_POST['hero_id']); // Assume `deleteHero()` deletes a hero by ID
+    header("Location: manage-hero.php");
     exit();
   }
 }
@@ -23,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Manage Users</title>
+    <title>Manage Heroes</title>
     <? include_once("../assets/link.html"); ?>
     <link href="../assets/css/table-styles.css" rel="stylesheet" />
     <style>
@@ -41,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 10px;
         }
         @media (max-width: 768px) {
-            td{
+            td {
                 height: 40px;
                 line-height: 40px;
             }
@@ -57,22 +56,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <div style="margin-top:100px;"class="container">
+    <div style="margin-top:100px;" class="container">
         <div class="card mb-4">
             <div class="card-header">
-                <i class="fas fa-cogs me-1"></i> Manage Auctions
+                <i class="fas fa-cogs me-1"></i> Manage Heroes
             </div>
             <div class="card-body">
-                <table id="auctionsTable">
+                <table id="heroesTable">
                     <thead>
                         <tr>
                             <th>S/No</th>
                             <th>Title</th>
-                            <th>Profile</th>
-                            <th>Base Price (₹)</th>
-                            <th>High Price (₹)</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
+                            <th>Message</th>
+                            <th>Hero Image</th>
                             <th>Status</th>
                             <th>View</th>
                             <th>Edit</th>
@@ -83,11 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <tr>
                             <th>S/No</th>
                             <th>Title</th>
-                            <th>Profile</th>
-                            <th>Base Price (₹)</th>
-                            <th>High Price (₹)</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
+                            <th>Message</th>
+                            <th>Hero Image</th>
                             <th>Status</th>
                             <th>View</th>
                             <th>Edit</th>
@@ -96,31 +89,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </tfoot>
                     <tbody>
                         <?php $counter = 1; ?>
-                        <?php foreach ($auctions as $auction): ?>
+                        <?php foreach ($heroes as $hero): ?>
                             <tr>
                                 <td><?= $counter++ ?></td>
-                                <td><?= htmlspecialchars($auction['auctionTitle']) ?></td>
+                                <td><?= htmlspecialchars($hero['heroTitle']) ?></td>
+                                <td><?= htmlspecialchars($hero['heroMessage']) ?></td>
                                 <td>
-                                    <img src="../images/products/<?= htmlspecialchars($auction['auctionProductImg']) ?>" alt="Product Image" class="rounded-1 border border-dark" width="50" height="50">
+                              <?= htmlspecialchars($hero['heroImage']) ?>      <img src="../images/heroes/<?= htmlspecialchars($hero['heroImg']) ?>" alt="Hero Image" class="rounded-1 border border-dark" width="50" height="50">
                                 </td>
-                                <td><?= htmlspecialchars($auction['auctionStartPrice']) ?></td>
-                                <td><?= htmlspecialchars(getHighestBid($auction['auctionId'])) ?></td>
-                                <td><?= (new DateTime($auction['auctionStartDate']))->format('d/m/Y') ?></td>
-                                <td><?= (new DateTime($auction['auctionEndDate']))->format('d/m/Y') ?></td>
                                 <td>
-                                    <p class="badge rounded-pill <?= $auction['auctionStatus'] === 'activate' ? 'bg-success text-white' : ($auction['auctionStatus'] === 'deactivate' ? 'bg-warning text-dark' : 'bg-danger text-white') ?> m-0">
-                                        <?= htmlspecialchars($auction['auctionStatus']) ?>
+                                    <p class="badge rounded-pill <?= $hero['heroStatus'] === 'activate' ? 'bg-success text-white' : ($hero['heroStatus'] === 'deactivate' ? 'bg-warning text-dark' : 'bg-danger text-white') ?> m-0">
+                                        <?= htmlspecialchars($hero['heroStatus']) ?>
                                     </p>
                                 </td>
                                 <td>
-                                    <a href="bid.php?id=<?= $auction['auctionId'] ?>" class="btn btn-info btn-sm fw-bold text-white align-items-center">View</a>
+                                    <a href="view-hero.php?id=<?= $hero['heroId'] ?>" class="btn btn-info btn-sm fw-bold text-white align-items-center">View</a>
                                 </td>
                                 <td>
-                                    <a href="edit-auction.php?auctionId=<?= htmlspecialchars($auction['auctionId']) ?>" class="btn btn-warning btn-sm fw-bold text-dark">Edit</a>
+                                    <a href="edit-hero.php?heroId=<?= htmlspecialchars($hero['heroId']) ?>" class="btn btn-warning btn-sm fw-bold text-dark">Edit</a>
                                 </td>
                                 <td>
                                     <form method="POST" class="d-inline">
-                                        <input type="hidden" name="auction_id" value="<?= htmlspecialchars($auction['auctionId']) ?>">
+                                        <input type="hidden" name="hero_id" value="<?= htmlspecialchars($hero['heroId']) ?>">
                                         <button type="submit" name="delete" class="btn btn-danger btn-sm fw-bold text-white" onclick="return confirm('Are you sure?')">Delete</button>
                                     </form>
                                 </td>
@@ -133,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 <script>
     window.addEventListener('DOMContentLoaded', event => {
-        const datatablesSimple = document.getElementById('auctionsTable');
+        const datatablesSimple = document.getElementById('heroesTable');
         if (datatablesSimple) {
             new simpleDatatables.DataTable(datatablesSimple);
         }

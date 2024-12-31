@@ -108,6 +108,15 @@ function getAllHeroes() {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Get Heroes by Id
+function getHeroById($id) {
+  global $pdo;
+  $stmt = $pdo->prepare("SELECT * FROM heroes WHERE heroId = :id");
+  $stmt->bindValue(":id", $id, PDO::PARAM_INT); // Bind the parameter correctly
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 // Get the highest bid for a specific auction
 function getHighestBid($auction_id) {
     global $pdo;
@@ -232,6 +241,34 @@ function getInactivateUsers() {
     $stmt = $pdo->prepare("SELECT * FROM users WHERE userStatus <> :sStatus AND userStatus = :iaStatus");
     $stmt->execute(['sStatus' => 'suspend','iaStatus' => 'deactivate']);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function addHero($heroTitle, $heroMessage, $heroContent, $heroImg, $heroStatus) {
+    global $pdo;
+
+    try {
+        // Prepare the SQL insert statement with correct column names
+        $stmt = $pdo->prepare("INSERT INTO heroes 
+            (heroTitle, heroMessage, heroContent, heroImg, heroStatus, createdAt) 
+            VALUES (:heroTitle, :heroMessage, :heroContent, :heroImg, :heroStatus, NOW())");
+
+        // Execute the query with the correct named parameters
+        $success = $stmt->execute([
+            'heroTitle' => $heroTitle,
+            'heroMessage' => $heroMessage,
+            'heroContent' => $heroContent,
+            'heroImg' => $heroImg,
+            'heroStatus' => $heroStatus,
+        ]);
+
+        if ($success) {
+            return "Hero added successfully!";
+        } else {
+            return "Error: Failed to add hero.";
+        }
+    } catch (PDOException $e) {
+        return "Database error: " . $e->getMessage();
+    }
 }
 
 // Add a new auction
@@ -404,6 +441,46 @@ function updateUserProfile($user_id, $fname, $lname, $account_no, $image, $phone
     ]);
 
     return $result;
+}
+
+// Update heros details
+function updateHero($heroId, $title, $message, $content, $status, $oldImage, $newImage = null) {
+    global $pdo;
+
+    // Validate that the status is one of the valid ENUM values
+    $validStatuses = ['activate', 'deactivate', 'suspend'];
+    if (!in_array($status, $validStatuses)) {
+        return "Invalid status value. Allowed values are 'activate', 'deactivate', or 'suspend'.";
+    }
+
+    // If a new image is uploaded, use it; otherwise, retain the old image
+    $image = $newImage ? $newImage : $oldImage;
+
+    // Prepare the SQL query to update the hero details
+    $sql = "UPDATE heroes 
+            SET heroTitle = :title, 
+                heroMessage = :message, 
+                heroContent = :content, 
+                heroStatus = :status, 
+                heroImg = :image
+            WHERE heroId = :heroId";
+
+    // Prepare and execute the statement
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':title' => $title,
+            ':message' => $message,
+            ':content' => $content,
+            ':status' => $status,
+            ':image' => $image,
+            ':heroId' => $heroId
+        ]);
+
+        return "Hero updated successfully";
+    } catch (PDOException $e) {
+        return "Error: " . $e->getMessage();
+    }
 }
 
 // Update auction details

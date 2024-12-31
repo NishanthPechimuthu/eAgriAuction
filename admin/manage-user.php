@@ -97,6 +97,22 @@ ob_end_flush(); // End buffering and flush output
                         <th>Delete</th>
                     </tr>
                 </thead>
+                <tfoot>
+                    <tr>
+                        <th>S/No</th>
+                        <th>Name</th>
+                        <th>Profile</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Account No</th>
+                        <th>View</th>
+                        <th>Suspend</th>
+                        <th>Delete</th>
+                    </tr>
+                </tfoot>
                 <tbody>
                     <?php
                     $counter = 1;
