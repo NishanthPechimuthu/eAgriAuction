@@ -36,28 +36,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $product_type = $_POST["product_type"];
   $product_quantity = $_POST["product_quantity"];
   $product_unit = $_POST["product_unit"];
-  // Check if a new image was uploaded
-  // Inside the if block for handling image upload
+  
+  // Initialize image handling
+  $image = null;
+  
   if (!empty($_POST['cropped_image'])) {
     // Process the new cropped image
     $croppedImageData = $_POST['cropped_image'];
     $uploadDir = '../images/products/';
-
     // Ensure the directory exists
     if (!is_dir($uploadDir)) {
       mkdir($uploadDir, 0777, true);
     }
-
-    // Check if the auction already has an image
+    
     $oldImage = $auction['auctionProductImg']; // Assuming the old image filename is stored in auction['auctionProductImg']
-
+    
     // If the old image exists, remove it before uploading the new image
     if (!empty($oldImage) && file_exists($uploadDir . $oldImage)) {
       unlink($uploadDir . $oldImage); // Remove the old image
     }
 
     // Generate a unique name for the new image
-    $uniqueName = 'prod_' . uniqid() . '.webp';
+    $uniqueName = uniqid('auction_', true) . '.webp'; // Unique file name with a .webp extension
     $targetFile = $uploadDir . $uniqueName;
 
     // Decode base64 and save the image
@@ -65,63 +65,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $croppedImageData = base64_decode($croppedImageData);
 
     if (file_put_contents($targetFile, $croppedImageData)) {
-      // If save successful, call function to update auction with the new image
-      $imgProd = $uniqueName ?? $oldImage;
-      $result = updateAuction($auctionId, $title, $start_price, $start_time, $end_date, $category_id, $address, $description, $imgProd, $status, $product_type, $product_quantity, $pro);
-      if (strpos($result, "Auction updated successfully") !== false) {
-        echo '
-        <p class="alert alert-success alert-dismissible fade show d-flex align-items-center"
-           role="alert"  data-bs-dismiss="alert"
-                  aria-label="Close"
-           style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
-              Auction updated successfully
-        </p>
-    ';
-      } else {
-        echo '
-        <p class="alert alert-danger alert-dismissible fade show d-flex align-items-center"
-           role="alert"  data-bs-dismiss="alert"
-                  aria-label="Close"
-           style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
-              Error: ' . $result . '
-        </p>
-    ';
-      }
-    } else {
-      echo '
-        <p class="alert alert-warning alert-dismissible fade show d-flex align-items-center"
-           role="alert"  data-bs-dismiss="alert"
-                  aria-label="Close"
-           style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
-              Error: Failed to save the cropped image.
-        </p>
-    ';
-    }
-  } else {
-    // No cropped image uploaded, use the old image or handle accordingly
-    $oldImage = !empty($auction['auctionProductImg']) ? $auction['auctionProductImg'] : null;
-    $result = updateAuction($auctionId, $title, $start_price, $start_time, $end_date, $category_id, $address, $description, $oldImage, $status, $product_type, $product_quantity, $product_unit);
-    if (strpos($result, "Auction updated successfully") !== false) {
-      echo '
-        <p class="alert alert-success alert-dismissible fade show d-flex align-items-center"
-           role="alert"  data-bs-dismiss="alert"
-                  aria-label="Close"
-           style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
-              Auction updated successfully.
-        </p>
-    ';
-    } else {
-      echo '
-        <p class="alert alert-warning alert-dismissible fade show d-flex align-items-center"
-           role="alert"  data-bs-dismiss="alert"
-                  aria-label="Close"
-           style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
-              Error: ' . $result . '
-        </p>
-    ';
+      $image = $uniqueName; // Set the cropped image as the new image
     }
   }
 
+  // If no cropped image, keep the old image or handle accordingly
+  if (empty($image)) {
+    $image = !empty($auction['auctionProductImg']) ? $auction['auctionProductImg'] : null;
+  }
+
+  // Call updateAuction function
+  $result = updateAuction($auctionId, $title, $start_price, $start_time, $end_date, $category_id, $address, $description, $image, $status, $product_type, $product_quantity, $product_unit);
+
+  if ($result) {
+    echo '
+    <p class="alert alert-success alert-dismissible fade show d-flex align-items-center"
+       role="alert"  data-bs-dismiss="alert"
+       aria-label="Close"
+       style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+          Auction updated successfully
+    </p>';
+$auction = getAuctionById($auctionId);
+  } else {
+    echo '
+    <p class="alert alert-danger alert-dismissible fade show d-flex align-items-center"
+       role="alert"  data-bs-dismiss="alert"
+       aria-label="Close"
+       style="white-space:nowrap; max-width: 100%; overflow-y: auto; ">
+          Error: Failed to update the auction.
+    </p>';
+  }
 }
 
 ini_set('display_errors', 1);
@@ -134,10 +107,10 @@ error_reporting(E_ALL);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Auction</title>
-  <? include_once("../assets/link.html"); ?>
+  <?php include_once("../assets/link.html"); ?>
 </head>
 <body>
-  <div class="container py-5 mt-5">
+  <div class="container py-5">
     <div class="card mb-4">
       <div class="card-header">
         <i class="bi bi-pencil-square"></i>&nbsp;
@@ -186,18 +159,11 @@ error_reporting(E_ALL);
           </div>
 
           <div class="mb-3">
-            <label for="product_type" class="form-label">Product Type</label>
+            <label for="product_unit" class="form-label">Product Unit</label>
             <select id="product_unit" name="product_unit" class="form-control" required>
-              <option value="" disabled>Select Unit</option>
-              <option value="kg" <?=$auction["auctionProductUnit"] == 'kg' ? 'selected' : '' ?>>
-                KG
-              </option>
-              <option value="ton" <?=$auction["auctionProductUnit"] == 'ton' ? 'selected' : '' ?>>
-                TON
-              </option>
-              <option value="nos" <?=$auction["auctionProductUnit"] == 'nos' ? 'selected' : '' ?>>
-                NOS
-              </option>
+              <option value="kg" <?=$auction["auctionProductUnit"] == 'kg' ? 'selected' : '' ?>>KG</option>
+              <option value="ton" <?=$auction["auctionProductUnit"] == 'ton' ? 'selected' : '' ?>>TON</option>
+              <option value="nos" <?=$auction["auctionProductUnit"] == 'nos' ? 'selected' : '' ?>>NOS</option>
             </select>
           </div>
 
@@ -321,7 +287,8 @@ error_reporting(E_ALL);
 </script>
 </body>
 </html>
-<?
-  include_once("./footer.php");
-  ob_end_flush();
+
+<?php
+include_once("./footer.php");
+ob_end_flush();
 ?>

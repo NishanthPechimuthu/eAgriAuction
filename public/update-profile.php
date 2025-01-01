@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <? include_once("../assets/link.html"); ?>
 </head>
 <body>
-  <div style="margin-top:100px;" class="container">
+  <div class="container py-5">
     <div class="card mb-4">
       <div class="card-header">
         <i class="fa fa-user-pen"></i>&nbsp;

@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = addHero($heroTitle, $heroMessage, $heroContent, $uniqueName, $heroStatus);
 
             if ($result === "Hero added successfully!") {
-               header("Location: manage-hero.php");
+                header("Location: manage-hero.php");
                 exit();
             } else {
                 echo '<p class="alert alert-danger">' . $result . '</p>';
@@ -60,7 +60,7 @@ error_reporting(E_ALL);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Hero</title>
-  <? include_once("../assets/link.html"); ?>
+  <?php include_once("../assets/link.html"); ?>
   <!-- Include Cropper.js -->
   <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.css" rel="stylesheet">
   <!-- Include TinyMCE -->
@@ -84,7 +84,7 @@ error_reporting(E_ALL);
           </div>
           <div class="mb-3">
             <label for="heroContent" class="form-label">Content</label>
-            <textarea id="heroContent" name="heroContent" class="form-control"></textarea>
+            <textarea id="heroContent" name="heroContent" class="form-control"><?= htmlspecialchars($hero["heroContent"] ?? '') ?></textarea>
           </div>
           <div class="mb-3">
             <label for="heroStatus" class="form-label">Status</label>
@@ -132,11 +132,13 @@ error_reporting(E_ALL);
 
   <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.js"></script>
   <script>
-    // Initialize TinyMCE for rich text editing
+    // Initialize TinyMCE for rich text and source code mode
     tinymce.init({
       selector: '#heroContent',
-      plugins: 'lists link image charmap preview',
-      toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
+      plugins: 'lists link image charmap preview code', // Add 'code' plugin
+      toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image | code', // Add 'code' button
+      menubar: false,
+      height: 300, // Set editor height
     });
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -145,12 +147,12 @@ error_reporting(E_ALL);
       const cropperImage = document.getElementById('cropperImage');
       const cropButton = document.getElementById('cropButton');
       const croppedImageInput = document.getElementById('croppedImage');
-      const imagePreview = document.getElementById('imagePreview'); // Image preview element
+      const imagePreview = document.getElementById('imagePreview');
 
       let cropper;
       let modal;
 
-      // Product image input change
+      // Handle image upload and cropping
       productImageInput.addEventListener('change', function () {
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -161,29 +163,24 @@ error_reporting(E_ALL);
           cropper = new Cropper(cropperImage, {
             aspectRatio: 16 / 9,
             viewMode: 2,
-            responsive: true,
-            scalable: true,
-            rotatable: true,
           });
-          modal = new bootstrap.Modal(cropperModal); // Initialize modal
-          modal.show(); // Show modal
+          modal = new bootstrap.Modal(cropperModal);
+          modal.show();
         };
         reader.readAsDataURL(this.files[0]);
       });
 
-      // Crop button action
+      // Handle cropping action
       cropButton.addEventListener('click', function () {
         const canvas = cropper.getCroppedCanvas({
           width: 800,
           height: 450,
         });
-        croppedImageInput.value = canvas.toDataURL('image/webp'); // Save the cropped image in hidden input
-
-        // Show the preview in the form
+        croppedImageInput.value = canvas.toDataURL('image/webp');
         imagePreview.src = canvas.toDataURL('image/webp');
-        imagePreview.style.display = 'block'; // Make the preview visible
+        imagePreview.style.display = 'block';
 
-        modal.hide(); // Close the modal
+        modal.hide();
         cropper.destroy();
         cropper = null;
       });

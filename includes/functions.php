@@ -450,7 +450,7 @@ function updateHero($heroId, $title, $message, $content, $status, $oldImage, $ne
     // Validate that the status is one of the valid ENUM values
     $validStatuses = ['activate', 'deactivate', 'suspend'];
     if (!in_array($status, $validStatuses)) {
-        return "Invalid status value. Allowed values are 'activate', 'deactivate', or 'suspend'.";
+        return " Invalid status value. Allowed values are 'activate', 'deactivate', or 'suspend'.";
     }
 
     // If a new image is uploaded, use it; otherwise, retain the old image
@@ -484,53 +484,52 @@ function updateHero($heroId, $title, $message, $content, $status, $oldImage, $ne
 }
 
 // Update auction details
-function updateAuction($auctionId, $title, $start_price, $start_time, $end_date, $category_id, $address, $description, $oldImage, $status, $product_type, $product_quantity, $product_unit, $newImage = null) {
+function updateAuction($auctionId, $title, $start_price, $start_time, $end_date, $category_id, $address, $description, $image, $status, $product_type, $product_quantity, $product_unit) {
     global $pdo;
 
-    // Validate that the status is one of the valid ENUM values
     $validStatuses = ['activate', 'deactivate', 'suspend'];
     if (!in_array($status, $validStatuses)) {
-        return "Invalid status value. Allowed values are 'activate', 'deactivate', or 'suspend'.";
+        return false; // Return false for invalid status
     }
 
-    // If a new image is uploaded, use it; otherwise, retain the old image
-    $image = $newImage ? $newImage : $oldImage;
+    try {
+        $sql = "UPDATE auctions 
+                SET auctionTitle = :title, 
+                    auctionStartPrice = :start_price, 
+                    auctionStartDate = :start_time, 
+                    auctionEndDate = :end_date, 
+                    auctionCategoryId = :category_id, 
+                    auctionAddress = :address, 
+                    auctionDescription = :description, 
+                    auctionProductImg = :image, 
+                    auctionStatus = :status,
+                    auctionProductType = :product_type,
+                    auctionProductQuantity = :product_quantity,
+                    auctionProductUnit = :product_unit
+                WHERE auctionId = :auctionId";
 
-    // Prepare the SQL query to update the auction details
-    $sql = "UPDATE auctions 
-            SET auctionTitle = :title, 
-                auctionStartPrice = :start_price, 
-                auctionStartDate = :start_time, 
-                auctionEndDate = :end_date, 
-                auctionCategoryId = :category_id, 
-                auctionAddress = :address, 
-                auctionDescription = :description, 
-                auctionProductImg = :image, 
-                auctionStatus = :status,
-                auctionProductType = :product_type,
-                auctionProductQuantity = :product_quantity,
-                auctionProductUnit = :product_unit
-            WHERE auctionId = :auctionId";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':title' => $title,
+            ':start_price' => $start_price,
+            ':start_time' => $start_time,
+            ':end_date' => $end_date,
+            ':category_id' => $category_id,
+            ':address' => $address,
+            ':description' => $description,
+            ':image' => $image,
+            ':status' => $status,
+            ':product_type' => $product_type,
+            ':product_quantity' => $product_quantity,
+            ':product_unit' => $product_unit,
+            ':auctionId' => $auctionId
+        ]);
 
-    // Prepare and execute the statement
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        ':title' => $title,
-        ':start_price' => $start_price,
-        ':start_time' => $start_time,
-        ':end_date' => $end_date,
-        ':category_id' => $category_id,
-        ':address' => $address,
-        ':description' => $description,
-        ':image' => $image,
-        ':status' => $status, // Valid ENUM value: 'activate', 'deactivate', 'suspend'
-        ':product_type' => $product_type,
-        ':product_quantity' => $product_quantity,
-        ':product_unit' => $product_unit,
-        ':auctionId' => $auctionId
-    ]);
-
-    return "Auction updated successfully";
+        return true; // Return true for success
+    } catch (PDOException $e) {
+        error_log("Error updating auction: " . $e->getMessage());
+        return false; // Return false for failure
+    }
 }
 
 // Fetch only the UPI ID of a user by their ID

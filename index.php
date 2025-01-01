@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-12 col-12">
                     <div class="about-img">
-                        <img style="overflow:hidden;" src="./images/img/1.jpg" alt="" class="img-fluid">
+                        <img style="overflow:hidden;" src="./images/heroes/1.jpg" alt="" class="img-fluid">
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-12 col-12 ps-lg-5 mt-md-5">

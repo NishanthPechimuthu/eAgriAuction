@@ -20,7 +20,7 @@ $auctions = getAuctionsParticipate($user_id);
   <? include_once("../assets/link.html"); ?>
 </head>
 <body>
-  <div class="container py-5 mt-5">
+  <div class="container py-5">
     <div class="card mb-4">
       <div class="card-header">
         <i class="fa fa-user-check"></i>&nbsp;

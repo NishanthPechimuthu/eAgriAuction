@@ -174,7 +174,7 @@ $auction_end_date = date("Y-m-d H:i:s", strtotime($auction['auctionEndDate']));
   </script>
 </head>
 <body>
-  <div style="margin-top:76px;"class="container py-4">
+  <div class="container py-5">
     <div class="card mb-4">
       <div class="card-header">
         <i class="fa fa-balance-scale"></i>&nbsp;

@@ -12,7 +12,6 @@ $sUserId = getHighestBidderId($auction_id);
 $auction = getAuctionById($auction_id);
 $sUser = getUserById($sUserId);
 $rUser = getUserById($auction["auctionCreatedBy"]);
-
 // Check if the user has the right to view the invoice
 if ($sUserId != $_SESSION["userId"] && $auction["auctionCreatedBy"] != $_SESSION["userId"]) {
     echo '
@@ -21,11 +20,13 @@ if ($sUserId != $_SESSION["userId"] && $auction["auctionCreatedBy"] != $_SESSION
                   aria-label="Close"
            style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
             The Invoice is not for you.
+           r: '.$rUser["userId"].' s:'.$sUserId.' u:'.$_SESSION["userId"].'
         </p>
         <a href="./auctions.php" class="btn btn-primary rounded-pill d-block">Back to home</a>
     ';
     exit();
 }
+
 
 $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
 
@@ -118,7 +119,7 @@ $html .= '
      <hr>
 ';
 
-// Create new PDF document
+// Create new PDF document with default orientation (portrait) and default A4 size
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 $pdf->SetMargins(-1, 0, -1);
 $pdf->setPrintHeader(false);
@@ -128,10 +129,10 @@ $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 // Set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor('Your Name');
-$pdf->SetTitle('Invoice');
-$pdf->SetSubject('Auction Invoice');
-$pdf->SetKeywords('TCPDF, PDF, auction, invoice');
+$pdf->SetAuthor('eAgri (blk)');
+$pdf->SetTitle('Invoice ' . htmlspecialchars(explode('.', $trans["transTrackingId"])[1]));
+$pdf->SetSubject('Auction Invoice for ' . htmlspecialchars($auction["auctionTitle"]));
+$pdf->SetKeywords(htmlspecialchars($auction["auctionTitle"]) . ', auction, invoice');
 
 // Set font to DejaVu Sans (for rupee symbol support)
 $pdf->SetFont('dejavusans', '', 10);

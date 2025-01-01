@@ -20,12 +20,18 @@
       <div class="row">
         <!-- Image Section with rounded corners -->
         <div class="col-md-6 center">
-          <img src="./images/<?=$hero['heroImg']?>" class="img-fluid rounded-1" alt="Hero Image">
+          <img src="./images/heroes/<?=$hero['heroImg']?>" class="img-fluid rounded-1" alt="Hero Image">
         </div>
         <!-- Content Section -->
         <div class="col-md-6 mb-1">
+          <div class="m-2 card min-vh-100">
+            <div class="card-header">
           <h2><?=$hero["heroTitle"]?></h2>
-          <p><?=$hero["heroContent"]?></p>
+            </div>
+  <div class="card-body">
+    <?= $hero["heroContent"]; ?>
+  </div>
+</div>
         </div>
       </div>
     </div>
