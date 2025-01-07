@@ -5,7 +5,7 @@ include("header.php");
 include("navbar.php");
 
 // Call the authentication function
-isAuthenticated();
+isAuthenticatedAsAdmin();
 
 // Retrieve heroes from the database
 $heroes = getAllHeroes(); // Assume `getAllHeroes()` retrieves all heroes from the database
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <title>Manage Heroes</title>
-    <? include_once("../assets/link.html"); ?>
+    <?php include_once("../assets/link.html"); ?>
     <link href="../assets/css/table-styles.css" rel="stylesheet" />
     <style>
         td {
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <div style="margin-top:100px;" class="container">
+    <div class="container">
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-cogs me-1"></i> Manage Heroes

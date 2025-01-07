@@ -17,7 +17,7 @@ $users = getAllUsers();
 <html lang="en">
 <head>
     <title>Admin Dashboard</title>
-    <? include("../assets/link.html"); ?>
+    <?php include("../assets/link.html"); ?>
     <style>
         td {
             height: 50px;
@@ -169,8 +169,8 @@ $users = getAllUsers();
           </div>
       </div>
       <div class="row">
-       <? include("registration-chart.php"); ?>
-       <? include("bid-chart.php"); ?>
+       <?php include("registration-chart.php"); ?>
+       <?php include("bid-chart.php"); ?>
      </div>
       <div class="row">
         <div class="col-lg-12">
@@ -233,7 +233,7 @@ $users = getAllUsers();
         </div>
      </div>
 </div>
-  <? include("./footer.php"); ?>
+  <?php include("./footer.php"); ?>
 <script>
   
 </script>

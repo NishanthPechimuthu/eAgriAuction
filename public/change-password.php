@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Change Password</title>
-  <? include_once("../assets/link.html"); ?>
+  <?php include_once("../assets/link.html"); ?>
 </head>
 <body>
   <div class="container py-5">
@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </script>
 </body>
 </html>
-<?
+<?php
   include_once("./footer.php");
   ob_end_flush();
 ?>

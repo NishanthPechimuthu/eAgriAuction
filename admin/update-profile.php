@@ -78,10 +78,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
   <title>Update Profile</title>
-  <? include_once("../assets/link.html"); ?>
+  <?php include_once("../assets/link.html"); ?>
 </head>
 <body>
-  <div class="container mt-5">
+  <div class="container">
     <div class="card mb-4">
       <div class="card-header">
         <i class="fa fa-user-pen"></i>&nbsp;

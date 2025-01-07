@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <? include_once("./assets/link.html"); ?>
+  <?php include_once("./assets/link.html"); ?>
   
 </head>
 <body class="bg-light">
 
   <!-- Top Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-2 py-1 fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-2 py-0 fixed-top">
     <a class="navbar-brand" href="index.php">
       <img width="54px" height="54px" src="./images/logo/android-chrome-192x192.png" alt="Logo">
     </a>
@@ -22,10 +22,13 @@
           <a class="nav-link" href="./index.php">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="./about.php">About</a>
+          <a class="nav-link" href="./index.php#about">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="./contact.php">Contact</a>
+          <a class="nav-link" href="./index.php#contact">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./moments.php">Moments</a>
         </li>
         <li class="nav-item">
           <a class="nav-link btn btn-primary text-white m-1 fw-bold" href="./public/login.php">Login</a>

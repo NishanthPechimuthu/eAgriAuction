@@ -132,7 +132,7 @@ error_reporting(E_ALL);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Auction</title>
-  <? include_once("../assets/link.html"); ?>
+  <?php include_once("../assets/link.html"); ?>
 </head>
 <body>
   <div class="container py-5">

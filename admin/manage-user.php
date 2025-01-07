@@ -68,7 +68,7 @@ ob_end_flush(); // End buffering and flush output
     </style>
 </head>
 <body>
-<div class="container mt-5">
+<div class="container">
     <h1 class="mt-4">Manage Users</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
@@ -157,8 +157,8 @@ ob_end_flush(); // End buffering and flush output
         </div>
     </div>
     <div class="row">
-      <? include("./registration-chart.php"); ?>
-      <? include("./user-status-chart.php"); ?>
+      <?php include("./registration-chart.php"); ?>
+      <?php include("./user-status-chart.php"); ?>
     </div>
 </div>
 

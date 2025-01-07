@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <? include_once("../assets/link.html"); ?>
+  <?php include_once("../assets/link.html"); ?>
   
 </head>
 <body class="bg-light">
@@ -31,8 +31,11 @@
             <a class="dropdown-item" href="../public/manage-auction.php">Manage Auction</a>
           </div>
         </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../public/add-moments.php">Add Moment</a>
+        </li>
       </ul>
-      <ul class="navbar-nav"> <!-- Ensure this pushes items to the right -->
+      <ul class="navbar-nav ml-auto"> <!-- Ensure this pushes items to the right -->
         <li class="nav-item dropdown">
           <?php $userImg = getUserImg($_SESSION["userId"] ?? ""); ?>
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -100,7 +100,7 @@ $auction_end_date = date("Y-m-d H:i:s", strtotime($auction['auctionEndDate']));
 <html lang="en">
 <head>
   <title>Place Bid</title>
-  <? include_once("../assets/link.html"); ?>
+  <?php include_once("../assets/link.html"); ?>
   <style>
     /* Ensures the table container allows horizontal scrolling */
     .table-container {
@@ -362,6 +362,7 @@ $auction_end_date = date("Y-m-d H:i:s", strtotime($auction['auctionEndDate']));
 </body>
 </html>
 <?
+  include_once("./review-popup.php");
   include_once("./footer.php");
   ob_end_flush();
 ?>

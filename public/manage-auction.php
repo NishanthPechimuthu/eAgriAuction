@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <title>Manage Users</title>
-    <? include_once("../assets/link.html"); ?>
+    <?php include_once("../assets/link.html"); ?>
     <link href="../assets/css/table-styles.css" rel="stylesheet" />
     <style>
         td {
@@ -143,6 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </html>
 
 <?php
+include_once("./auction-chatbot.php");
 include_once("./footer.php");
 ob_end_flush();
 ?>

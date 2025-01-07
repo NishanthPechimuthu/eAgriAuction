@@ -1,4 +1,5 @@
 <?php
+include("./header.php");
 // Fetch all heroes
 $heroes = getAllHeroes();
 ?>
@@ -14,7 +15,7 @@ $heroes = getAllHeroes();
         <?php foreach ($heroes as $index => $hero): ?>
             <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
                 <div class="carousel-image-wrapper position-relative overflow-hidden">
-                    <img src="./images/<?= htmlspecialchars($hero['heroImg']) ?>" class="d-block w-100 img-fluid" alt="<?= htmlspecialchars($hero['heroTitle']) ?>" style="object-fit: cover; height: 100vh;">
+                    <img src="./images/heroes/<?= htmlspecialchars($hero['heroImg']) ?>" class="d-block w-100 img-fluid" alt="<?= htmlspecialchars($hero['heroTitle']) ?>" style="object-fit: cover; height: 100vh;">
                     <div class="carousel-caption d-flex justify-content-center align-items-center position-absolute top-50 start-50 translate-middle w-100 text-center">
                         <div>
                             <h5 class="text-white"><?= htmlspecialchars($hero['heroTitle']) ?></h5>

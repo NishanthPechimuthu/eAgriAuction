@@ -1,2 +1,0 @@
-###eAgri Auction
-

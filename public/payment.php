@@ -414,7 +414,7 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <title>Payment</title>
-        <? include("../assets/link.html"); ?>
+        <?php include("../assets/link.html"); ?>
         <style>
             /* Your existing styles */
         </style>
@@ -487,7 +487,7 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
                                             </div>
                                             <div id="cvvError" class="text-danger"></div>
                                         </div>
-                                        <button type="submit" class="btn btn-success btn-block fw-bolder"> Confirm Payment </button>
+                                        <button disabled id="cnfbtn" type="submit" class="btn btn-success btn-block fw-bolder"> Confirm Payment </button>
                                     </form>
                                 </div>
                             </div>
@@ -499,80 +499,99 @@ $trans = getInvoiceDetails($sUserId, $auction_id, $highest_bid);
         <script type='text/javascript'>$(function() {
             $('[data-toggle="tooltip"]').tooltip()
         })</script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const form = document.querySelector("form");
-                const cardNumberInput = document.getElementById("cardNumber");
-                const expiryMonthInput = document.getElementById("expiryMonth");
-                const expiryYearInput = document.getElementById("expiryYear");
-                const cvvInput = document.getElementById("cvv");
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
+        const cardNumberInput = document.getElementById("cardNumber");
+        const expiryMonthInput = document.getElementById("expiryMonth");
+        const expiryYearInput = document.getElementById("expiryYear");
+        const cvvInput = document.getElementById("cvv");
+        const cnfbtn = document.getElementById("cnfbtn"); // Get reference to the submit button
 
-                // Validation function for Card Number
-                function validateCardNumber() {
-                    const cardNumber = cardNumberInput.value.trim();
-                    const cardNumberError = document.getElementById("cardNumberError");
+        // Validation function for Card Number
+        function validateCardNumber() {
+            const cardNumber = cardNumberInput.value.trim();
+            const cardNumberError = document.getElementById("cardNumberError");
 
-                    // Basic card number length validation (13-19 digits)
-                    if (cardNumber.length < 13 || cardNumber.length > 19) {
-                        cardNumberError.textContent = "Please enter a valid card number (13-19 digits).";
-                        return false;
-                    } else {
-                        cardNumberError.textContent = "";
-                        return true;
-                    }
-                }
+            // Basic card number length validation (13-19 digits)
+            if (cardNumber.length < 13 || cardNumber.length > 19) {
+                cardNumberError.textContent = "Please enter a valid card number (13-19 digits).";
+                return false;
+            } else {
+                cardNumberError.textContent = "";
+                return true;
+            }
+        }
 
-                // Validation function for Expiry Date
-                function validateExpiryDate() {
-                    const expiryMonth = parseInt(expiryMonthInput.value);
-                    const expiryYear = parseInt(expiryYearInput.value);
-                    const expiryDateError = document.getElementById("expiryDateError");
+        // Validation function for Expiry Date
+        function validateExpiryDate() {
+            const expiryMonth = parseInt(expiryMonthInput.value);
+            const expiryYear = parseInt(expiryYearInput.value);
+            const expiryDateError = document.getElementById("expiryDateError");
 
-                    const currentDate = new Date();
-                    const currentMonth = currentDate.getMonth() + 1; // months are 0-indexed
-                    const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits of the year
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth() + 1; // months are 0-indexed
+            const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits of the year
 
-                    if (expiryMonth < 1 || expiryMonth > 12 || expiryYear < currentYear || (expiryYear === currentYear && expiryMonth < currentMonth)) {
-                        expiryDateError.textContent = "Please enter a valid expiration date (MM/YY).";
-                        return false;
-                    } else {
-                        expiryDateError.textContent = "";
-                        return true;
-                    }
-                }
+            if (expiryMonth < 1 || expiryMonth > 12 || expiryYear < currentYear || (expiryYear === currentYear && expiryMonth < currentMonth)) {
+                expiryDateError.textContent = "Please enter a valid expiration date (MM/YY).";
+                return false;
+            } else {
+                expiryDateError.textContent = "";
+                return true;
+            }
+        }
 
-                // Validation function for CVV
-                function validateCVV() {
-                    const cvv = cvvInput.value.trim();
-                    const cvvError = document.getElementById("cvvError");
+        // Validation function for CVV
+        function validateCVV() {
+            const cvv = cvvInput.value.trim();
+            const cvvError = document.getElementById("cvvError");
 
-                    if (!/^\d{3}$/.test(cvv)) {
-                        cvvError.textContent = "CVV must be 3 digits.";
-                        return false;
-                    } else {
-                        cvvError.textContent = "";
-                        return true;
-                    }
-                }
+            if (!/^\d{3}$/.test(cvv)) {
+                cvvError.textContent = "CVV must be 3 digits.";
+                return false;
+            } else {
+                cvvError.textContent = "";
+                return true;
+            }
+        }
 
-                // Event listeners for live validation
-                cardNumberInput.addEventListener("input", validateCardNumber);
-                expiryMonthInput.addEventListener("input", validateExpiryDate);
-                expiryYearInput.addEventListener("input", validateExpiryDate);
-                cvvInput.addEventListener("input", validateCVV);
+        // Function to toggle the submit button based on validation
+        function toggleSubmitButton() {
+            const isCardValid = validateCardNumber();
+            const isExpiryValid = validateExpiryDate();
+            const isCVVValid = validateCVV();
 
-                // Form submission validation
-                form.addEventListener("submit", function(event) {
-                    // Perform validation before submitting
-                    const isCardValid = validateCardNumber();
-                    const isExpiryValid = validateExpiryDate();
-                    const isCVVValid = validateCVV();
+            // Enable button only if all validations pass
+            cnfbtn.disabled = !(isCardValid && isExpiryValid && isCVVValid);
+        }
 
-                    if (!(isCardValid && isExpiryValid && isCVVValid)) {
-                        event.preventDefault(); // Prevent form submission if validation fails
-                    }
-                });
-            });
-        </script>
+        // Event listeners for live validation
+        cardNumberInput.addEventListener("input", toggleSubmitButton);
+        expiryMonthInput.addEventListener("input", toggleSubmitButton);
+        expiryYearInput.addEventListener("input", toggleSubmitButton);
+        cvvInput.addEventListener("input", toggleSubmitButton);
+
+        // Form submission validation
+        form.addEventListener("submit", function(event) {
+            // Perform validation before submitting
+            const isCardValid = validateCardNumber();
+            const isExpiryValid = validateExpiryDate();
+            const isCVVValid = validateCVV();
+
+            if (!(isCardValid && isExpiryValid && isCVVValid)) {
+                event.preventDefault(); // Prevent form submission if validation fails
+            }
+        });
+
+        // Initial check to disable the submit button
+        toggleSubmitButton();
+    });
+</script>
     </body>
 </html>
+<?php
+    include_once("./review-popup.php");
+    include_once("./footer.php");
+    ob_end_flush();
+?>

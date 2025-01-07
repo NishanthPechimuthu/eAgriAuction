@@ -5,7 +5,7 @@ include("header.php");
 include("navbar.php");
 
 // Call the authentication function
-isAuthenticated();
+isAuthenticatedAsAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize user inputs
@@ -67,7 +67,7 @@ error_reporting(E_ALL);
   <script src="https://cdn.jsdelivr.net/npm/tinymce@5.10.2/tinymce.min.js"></script>
 </head>
 <body>
-  <div class="container py-5 mt-5">
+  <div class="container py-5">
     <div class="card mb-4">
       <div class="card-header">
         <i class="fa fa-user"></i>&nbsp; Add Hero

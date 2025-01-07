@@ -13,29 +13,32 @@
 </head>
 <body>
     <!-- Navbar -->
-    <? include("navbar.php"); ?>
-
-    <?php include("hero.php"); ?>
-
+    
+    <?php include("navbar.php"); ?>
+    
+    <!-- heros section -->
+    
+    <?php include("heroes.php"); ?>
+    
     <!-- About Section Starts -->
-    <section id="about" class="about section-padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-12 col-12">
-                    <div class="about-img">
-                        <img style="overflow:hidden;" src="./images/heroes/1.jpg" alt="" class="img-fluid">
-                    </div>
+<section id="about" class="about section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-12 col-12">
+                <div class="about-img">
+                    <img style="overflow:hidden;" src="./images/heroes/1.jpg" alt="eAgriAuction service image" class="img-fluid">
                 </div>
-                <div class="col-lg-8 col-md-12 col-12 ps-lg-5 mt-md-5">
-                    <div class="about-text">
-                        <h2>We Provide the Best Quality <br/> Services Ever</h2>
-                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam, labore reiciendis. Assumenda eos quod animi! Soluta nesciunt inventore dolores excepturi provident, culpa beatae tempora, explicabo corporis quibusdam corrupti. Autem, quaerat. Assumenda quo aliquam vel, nostrum explicabo ipsum dolor, ipsa perferendis porro doloribus obcaecati placeat natus iste odio est non earum?</p>
-                        <a href="#" class="btn btn-warning">Learn More</a>
-                    </div>
+            </div>
+            <div class="col-lg-8 col-md-12 col-12 ps-lg-5 mt-md-5">
+                <div class="about-text">
+                    <h2>Empowering Farmers with Better Returns <br/> Through eAuctions</h2>
+                    <p>eAgriAuction is a dedicated platform designed to help farmers auction their agricultural produce for better returns. By leveraging technology, we bridge the gap between farmers and buyers, ensuring transparency and competitive pricing for products such as grains, vegetables, fruits, and more. Our platform enables farmers to take control of their sales process, minimize intermediaries, and maximize profits.</p>
+                    <p>Whether you're a small-scale farmer or a large producer, eAgriAuction provides an easy-to-use interface to list your products, track bids in real-time, and secure payments seamlessly. Join us in revolutionizing agricultural trade and creating a brighter future for farmers across the nation.</p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
     <!-- About Section Ends -->
 
     <!-- Services Section Starts -->
@@ -57,7 +60,7 @@
                             <i class="bi bi-basket"></i>
                             <h3 class="card-title">Auction Your Products</h3>
                             <p class="lead">Farmers can list their agricultural products like grains, vegetables, and fruits for auction directly through our platform.</p>
-                            <button class="btn bg-success text-white">Learn More</button>
+                    <!--        <button class="btn bg-success text-white">Learn More</button> -->
                         </div>
                     </div>
                 </div>
@@ -68,7 +71,7 @@
                             <i class="bi bi-currency-rupee"></i>
                             <h3 class="card-title">Competitive Bidding</h3>
                             <p class="lead">Wholesalers can bid competitively on agricultural products, ensuring fair prices for both farmers and buyers.</p>
-                            <button class="btn bg-success text-white">Learn More</button>
+                         <!--   <button class="btn bg-success text-white">Learn More</button> -->
                         </div>
                     </div>
                 </div>
@@ -79,7 +82,7 @@
                             <i class="bi bi-truck"></i>
                             <h3 class="card-title">Streamlined Logistics</h3>
                             <p class="lead">Our platform connects farmers with buyers and ensures smooth logistics for delivery of products.</p>
-                            <button class="btn bg-success text-white">Learn More</button>
+                           <!--  <button class="btn bg-success text-white">Learn More</button> -->
                         </div>
                     </div>
                 </div>
@@ -97,30 +100,30 @@
                 <div class="col-md-12">
                     <div class="section-header text-center pb-2">
                         <h2>Contact Us</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur <br>adipisicing elit. Non, quo.</p>
+                        <p>Reach out to us for any inquiries or assistance.</p>
                     </div>
                 </div>
             </div>
             <div class="row m-0">
                 <div class="col-md-12 p-0 pt-2 pb-4">
-                    <form action="#" class="bg-light p-4 m-0">
+                    <form id="contactForm" action="contact-mail.php" method="POST" class="bg-light p-4 m-0">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <input class="form-control" placeholder="Full Name" required="" type="text">
+                                    <input class="form-control" name="full_name" placeholder="Full Name" required type="text">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <input class="form-control" placeholder="Email" required="" type="email">
+                                    <input class="form-control" name="email" placeholder="Email" required type="email">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <textarea class="form-control" placeholder="Message" required="" rows="3"></textarea>
+                                    <textarea class="form-control" name="message" placeholder="Message" required rows="3"></textarea>
                                 </div>
                             </div>
-                            <button class="btn btn-success btn-lg btn-block mt-3" type="button">Send Now</button>
+                            <button class="btn btn-success btn-lg btn-block mt-3" type="submit">Send Now</button>
                         </div>
                     </form>
                 </div>
@@ -134,4 +137,4 @@
 
 </body>
 </html>
-<? include("./footer.php"); ?>
+<?php include("./footer.php"); ?>

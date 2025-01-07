@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </style>
 </head>
 <body>
-<div class="container mt-5">
+<div class="container">
     <h1 class="mt-4">Manage Inactivate Users</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </table>
         </div>
     </div>
-    <? include("./user-status-chart.php"); ?>
+    <?php include("./user-status-chart.php"); ?>
 </div>
 
 <script>

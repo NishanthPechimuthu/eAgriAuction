@@ -219,4 +219,4 @@ $reviews = getReviews();
 </script>
 </body>
 </html>
-<? ob_end_flush(); ?>
+<?php ob_end_flush(); ?>

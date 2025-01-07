@@ -289,6 +289,7 @@ error_reporting(E_ALL);
 </html>
 
 <?php
-include_once("./footer.php");
-ob_end_flush();
+  include_once("./auction-chatbot.php");
+  include_once("./footer.php");
+  ob_end_flush();
 ?>

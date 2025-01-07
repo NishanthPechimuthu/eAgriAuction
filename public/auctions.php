@@ -16,7 +16,7 @@ $auctions = getActiveAuctions();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Auctions</title>
-  <? include_once("../assets/link.html"); ?>
+  <?php include_once("../assets/link.html"); ?>
 </head>
 <body>
   <div class="container py-5">
@@ -78,6 +78,7 @@ $auctions = getActiveAuctions();
 </body>
 </html>
 <?
+  include_once("./auction-chatbot.php");
   include_once("./footer.php");
   ob_end_flush();
 ?>

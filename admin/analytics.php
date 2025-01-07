@@ -13,7 +13,7 @@ isAuthenticatedAsAdmin();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Agri-Themed Charts</title>
-    <? include("../assets/link.html"); ?>
+    <?php include("../assets/link.html"); ?>
     <style>
         .pagination {
             margin: 0;
@@ -32,7 +32,7 @@ isAuthenticatedAsAdmin();
     </style>
 </head>
 <body>
-    <div class="container mt-4">
+    <div class="container">
         <h1 class="text-center">Agri-Themed Charts</h1>
 
         <!-- Include each chart -->

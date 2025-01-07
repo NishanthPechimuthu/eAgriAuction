@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <title>Manage Auctions</title>
-    <? include_once("../assets/link.html"); ?>
+    <?php include_once("../assets/link.html"); ?>
     <link href="../assets/css/table-styles.css" rel="stylesheet" />
     <style>
         td {
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container">
         <h1 class="mt-4">Manage Auctions</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
         <div class="row">
-          <? include("./auction-chart.php"); ?>
+          <?php include("./auction-chart.php"); ?>
         </div>
     </div>
 

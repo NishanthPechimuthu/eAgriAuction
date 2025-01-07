@@ -8,6 +8,22 @@ function setUserSession($userId) {
     $_SESSION['$userId'] = $userId;
 }
 
+// Function to handle adding a review
+function addReview($userId, $reviewMessage) {
+    global $pdo;
+
+    try {
+        $stmt = $pdo->prepare("INSERT INTO reviews (reviewUserId, reviewMessage, reviewStatus) VALUES (:userId, :message, 'deactivate')");
+        $stmt->execute([
+            ':userId' => $userId,
+            ':message' => htmlspecialchars(trim($reviewMessage)),
+        ]);
+        return ["success" => true, "message" => "Review submitted successfully."];
+    } catch (PDOException $e) {
+        return ["success" => false, "message" => "Database error: " . $e->getMessage()];
+    }
+}
+
 // user ID from session
 function getUserFromSession() {
     if (isset($_SESSION["userId"])) {
@@ -18,10 +34,11 @@ function getUserFromSession() {
 }
 
 
+
 // Fetch all active auctions
 function getActiveAuctions() {
     global $pdo;
-    $stmt = $pdo->query("SELECT * FROM auctions WHERE auctionEndDate > NOW() AND auctionStatus = 'activate'");
+    $stmt = $pdo->query("SELECT * FROM auctions WHERE auctionEndDate > NOW() AND auctionStartDate < NOW() AND auctionStatus = 'activate'");
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -95,6 +112,15 @@ function getReviews() {
     $stmt = $pdo->prepare("SELECT * FROM reviews WHERE reviewStatus = :status");
     $status = "activate"; // Define the status value
     $stmt->bindParam(':status', $status, PDO::PARAM_STR); // Correct parameter binding
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $result; // Return the result to be used elsewhere
+}
+
+//Get all reviews
+function getAllReviews() {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM reviews");
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $result; // Return the result to be used elsewhere
@@ -388,6 +414,143 @@ function deleteAuction($auction_id) {
               Auction not found.
             </p>
          ';
+    }
+}
+
+// Delete a review (mark as suspended)
+function deleteReview($review_id) {
+    global $pdo;
+
+    // Check if the review exists
+    $stmt = $pdo->prepare("SELECT * FROM reviews WHERE reviewId = :reviewId");
+    $stmt->execute(['reviewId' => $review_id]);
+    $review = $stmt->fetch();
+
+    if ($review) {
+        // Now, update the review status to 'suspend'
+        $deleteReviewStmt = $pdo->prepare("UPDATE reviews SET reviewStatus = 'suspend' WHERE reviewId = :reviewId");
+        $deleteReviewStmt->execute(['reviewId' => $review_id]);
+
+        // Optionally, check if update was successful
+        if ($deleteReviewStmt->rowCount() > 0) {
+            echo '
+            <p class="alert alert-success alert-dismissible fade show d-flex align-items-center" 
+                   role="alert"  data-bs-dismiss="alert" 
+                          aria-label="Close" 
+                   style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Review suspended successfully.
+            </p>
+            ';
+        } else {
+            echo '
+            <p class="alert alert-warning alert-dismissible fade show d-flex align-items-center" 
+                   role="alert"  data-bs-dismiss="alert" 
+                          aria-label="Close" 
+                   style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Failed to suspend review.
+            </p>
+            ';
+        }
+    } else {
+        echo '
+        <p class="alert alert-danger alert-dismissible fade show d-flex align-items-center" 
+               role="alert"  data-bs-dismiss="alert" 
+                      aria-label="Close" 
+               style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+          Review not found.
+        </p>
+        ';
+    }
+}
+// Delete a review (mark as suspended)
+function deactivateReview($review_id) {
+    global $pdo;
+
+    // Check if the review exists
+    $stmt = $pdo->prepare("SELECT * FROM reviews WHERE reviewId = :reviewId");
+    $stmt->execute(['reviewId' => $review_id]);
+    $review = $stmt->fetch();
+
+    if ($review) {
+        // Now, update the review status to 'suspend'
+        $deleteReviewStmt = $pdo->prepare("UPDATE reviews SET reviewStatus = 'deactivate' WHERE reviewId = :reviewId");
+        $deleteReviewStmt->execute(['reviewId' => $review_id]);
+
+        // Optionally, check if update was successful
+        if ($deleteReviewStmt->rowCount() > 0) {
+            echo '
+            <p class="alert alert-success alert-dismissible fade show d-flex align-items-center" 
+                   role="alert"  data-bs-dismiss="alert" 
+                          aria-label="Close" 
+                   style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Review suspended successfully.
+            </p>
+            ';
+        } else {
+            echo '
+            <p class="alert alert-warning alert-dismissible fade show d-flex align-items-center" 
+                   role="alert"  data-bs-dismiss="alert" 
+                          aria-label="Close" 
+                   style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Failed to suspend review.
+            </p>
+            ';
+        }
+    } else {
+        echo '
+        <p class="alert alert-danger alert-dismissible fade show d-flex align-items-center" 
+               role="alert"  data-bs-dismiss="alert" 
+                      aria-label="Close" 
+               style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+          Review not found.
+        </p>
+        ';
+    }
+}
+
+// Approve a review (mark as activated)
+function approveReview($review_id) {
+    global $pdo;
+
+    // Check if the review exists
+    $stmt = $pdo->prepare("SELECT * FROM reviews WHERE reviewId = :reviewId");
+    $stmt->execute(['reviewId' => $review_id]);
+    $review = $stmt->fetch();
+
+    if ($review) {
+        // Now, update the review status to 'activate'
+        $approveReviewStmt = $pdo->prepare("UPDATE reviews SET reviewStatus = 'activate' WHERE reviewId = :reviewId");
+        $approveReviewStmt->execute(['reviewId' => $review_id]);
+
+        // Optionally, check if update was successful
+        if ($approveReviewStmt->rowCount() > 0) {
+            echo '
+            <p class="alert alert-success alert-dismissible fade show d-flex align-items-center" 
+                   role="alert"  data-bs-dismiss="alert" 
+                          aria-label="Close" 
+                   style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Review approved successfully.
+            </p>
+            ';
+        } else {
+            echo '
+            <p class="alert alert-warning alert-dismissible fade show d-flex align-items-center" 
+                   role="alert"  data-bs-dismiss="alert" 
+                          aria-label="Close" 
+                   style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Failed to approve review.
+            </p>
+            ';
+        }
+    } else {
+        echo '
+        <p class="alert alert-danger alert-dismissible fade show d-flex align-items-center" 
+               role="alert"  data-bs-dismiss="alert" 
+                      aria-label="Close" 
+               style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+          Review not found.
+        </p>
+        ';
     }
 }
 
@@ -843,4 +1006,89 @@ function getInvoiceDetails($user_id, $auction_id, $highest_bid) {
     $result = $stmt->fetch(PDO::FETCH_ASSOC); // Corrected here to fetch() with PDO::FETCH_ASSOC
     return $result; // Returns the matching record or false if not found
 }
+
+// get all new moment
+function getAllMoment() {
+    global $pdo;
+
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM moments ORDER BY 1 DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all results as an associative array
+    } catch (PDOException $e) {
+        // Handle error and return empty array or log the error
+        error_log($e->getMessage()); // Log the error message
+        return []; // Return an empty array in case of error
+    }
+}
+
+// Add a new moment
+function addMoment($userId, $momentImg) {
+    global $pdo;
+
+    try {
+        $stmt = $pdo->prepare("INSERT INTO moments (momentUserId, momentImg, momentStatus) VALUES (:userId, :momentImg, 'deactivate')");
+        $stmt->execute([
+            ':userId' => $userId,
+            ':momentImg' => htmlspecialchars(trim($momentImg)),
+        ]);
+        return ["success" => true, "message" => "Moment added successfully."];
+    } catch (PDOException $e) {
+        return ["success" => false, "message" => "Database error: " . $e->getMessage()];
+    }
+}
+
+// Approve a moment
+function approveMoment($momentId) {
+    global $pdo;
+
+    try {
+        $stmt = $pdo->prepare("UPDATE moments SET momentStatus = 'activate' WHERE momentId = :momentId");
+        $stmt->execute([':momentId' => $momentId]);
+
+        if ($stmt->rowCount() > 0) {
+            return ["success" => true, "message" => "Moment deactivated successfully."];
+        } else {
+            return ["success" => false, "message" => "Failed to deactivate the moment or it is already deactivated."];
+        }
+    } catch (PDOException $e) {
+        return ["success" => false, "message" => "Database error: " . $e->getMessage()];
+    }
+}
+
+// Deactivate a moment
+function deactivateMoment($momentId) {
+    global $pdo;
+
+    try {
+        $stmt = $pdo->prepare("UPDATE moments SET momentStatus = 'deactivate' WHERE momentId = :momentId");
+        $stmt->execute([':momentId' => $momentId]);
+
+        if ($stmt->rowCount() > 0) {
+            return ["success" => true, "message" => "Moment deactivated successfully."];
+        } else {
+            return ["success" => false, "message" => "Failed to deactivate the moment or it is already deactivated."];
+        }
+    } catch (PDOException $e) {
+        return ["success" => false, "message" => "Database error: " . $e->getMessage()];
+    }
+}
+// Delete a moment
+function deleteMoment($momentId) {
+    global $pdo;
+
+    try {
+        $stmt = $pdo->prepare("UPDATE moments SET momentStatus = 'suspend' WHERE momentId = :momentId");
+        $stmt->execute([':momentId' => $momentId]);
+
+        if ($stmt->rowCount() > 0) {
+            return ["success" => true, "message" => "Moment deactivated successfully."];
+        } else {
+            return ["success" => false, "message" => "Failed to deactivate the moment or it is already deactivated."];
+        }
+    } catch (PDOException $e) {
+        return ["success" => false, "message" => "Database error: " . $e->getMessage()];
+    }
+}
+
 ?>

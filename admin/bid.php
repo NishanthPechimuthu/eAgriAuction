@@ -86,7 +86,7 @@ $auction_end_date = date("Y-m-d H:i:s", strtotime($auction['auctionEndDate']));
 <html lang="en">
 <head>
   <title>Place Bid</title>
-  <? include_once("../assets/link.html"); ?>
+  <?php include_once("../assets/link.html"); ?>
   <style>
     /* Ensures the table container allows horizontal scrolling */
     .table-container {
