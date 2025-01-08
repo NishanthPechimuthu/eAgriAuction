@@ -1,7 +1,7 @@
 <?php
 ob_start();
 session_start(); // Start the session
-include '../includes/auth.php';
+include './header.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $username = $_POST['username'];
@@ -22,9 +22,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   if ($registrationResult === true) {
-    // Set session variables or redirect
-    header("Location: login.php");
-    exit();
+      // Create a hidden form and submit it via POST
+      echo '<form id="redirectForm" action="activate-user.php" method="POST">
+              <input type="hidden" name="email" value="' . htmlspecialchars($email) . '">
+            </form>';
+      
+      echo '<script type="text/javascript">
+              document.getElementById("redirectForm").submit();
+            </script>';
   } else {
     $error = $registrationResult; // Capture the error message
   }

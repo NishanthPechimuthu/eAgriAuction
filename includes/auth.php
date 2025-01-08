@@ -221,6 +221,7 @@ function activateUser($user){
     try {
         $stmt = $pdo->prepare("UPDATE users SET userStatus = :status WHERE userId = :user");
         $stmt->execute(['user' => $user, 'status' => $status]);
+        return true;
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -238,5 +239,6 @@ function suspendUser($user){
         echo "Error: " . $e->getMessage();
     }
 }
+    
     
 ?>

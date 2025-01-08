@@ -776,9 +776,38 @@ function validateResetToken($user_id, $token) {
     return $stmt->rowCount() === 1;
 }
 
+function validateUserActivate($user_id, $token) {
+    global $pdo;
+
+    // Query to validate the reset token
+    $sql = "SELECT 1 FROM userActivate 
+            WHERE userActivateUserId = :user_id 
+              AND userActivateToken = :token 
+              AND DATE_ADD(createdAt, INTERVAL 10 MINUTE) > NOW()";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'user_id' => $user_id,
+        'token' => $token
+    ]);
+
+    // Return true if the token is valid, false otherwise
+    return $stmt->rowCount() === 1;
+}
+
 function updatePassResetToken($user_id, $token) {
     global $pdo;
     $sql = "UPDATE passResets SET passResetToken = 'EXPIRED' WHERE passResetUserId = :user_id and passResetToken = :token";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([
+      'user_id' => $user_id,
+      'token' => $token
+      ]);
+}
+
+function updateUserActivateToken($user_id, $token) {
+    global $pdo;
+    $sql = "UPDATE userActivate SET userActivateToken = 'EXPIRED' WHERE userActivateUserId = :user_id and userActivateToken = :token";
     $stmt = $pdo->prepare($sql);
     return $stmt->execute([
       'user_id' => $user_id,
@@ -830,6 +859,51 @@ function createPassResetToken($user_id, $token) {
                               aria-label="Close" 
                        style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
               Error inserting password reset token: ' . $e->getMessage() . '
+            </p>
+         ';
+        
+        // Return false if there's an error
+        return false;
+    }
+}
+
+function createUserActivateToken($user_id, $token) {
+    global $pdo;
+
+    try {
+        // Prepare the SQL statement without including the auto-increment passRestId
+        $stmt = $pdo->prepare("INSERT INTO userActivate (userActivateUserId, userActivateToken, createdAt) VALUES (:id, :token, NOW())");
+
+        // Execute the statement with the provided user_id and token
+        $stmt->execute([
+            ':id' => $user_id,
+            ':token' => $token
+        ]);
+
+        // Check if the insert was successful by checking the row count
+        if ($stmt->rowCount() > 0) {
+            return true; // Insert was successful
+        } else {
+            // Log if no rows were affected
+                echo '
+                <p class="alert alert-warning alert-dismissible fade show d-flex align-items-center" 
+                       role="alert"  data-bs-dismiss="alert" 
+                              aria-label="Close" 
+                       style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Error: Failed to insert token into the database. No rows affected.
+            </p>
+         ';
+            return false; // Insert failed
+        }
+
+    } catch (PDOException $e) {
+        // Log error to file or server log for debugging
+                        echo '
+                <p class="alert alert-warning alert-dismissible fade show d-flex align-items-center" 
+                       role="alert"  data-bs-dismiss="alert" 
+                              aria-label="Close" 
+                       style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Error inserting user activation token: ' . $e->getMessage() . '
             </p>
          ';
         
