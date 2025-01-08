@@ -148,7 +148,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["email"])){
                   Activation email could not be sent. Mailer Error: ' . $mail->ErrorInfo . '</p>
         ';
   }
-  echo $activationLink;
 }
 
 // Check if the 'Activa' GET parameter is set
