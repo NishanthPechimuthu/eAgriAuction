@@ -6,7 +6,7 @@ include("navbar.php");
 
 $auctionId = $_GET['auctionId'] ?? null;
 if ($auctionId === null) {
-  // Redirect or show an error if auctionId is not passed
+  echo "Auction ID is missing.";
   header("Location: manage-auction.php");
   exit();
 }
@@ -14,7 +14,7 @@ if ($auctionId === null) {
 $auction = getAuctionById($auctionId); // Function to fetch auction details by ID
 $categories = getCategories(); // Function to fetch all categories
 if (!$auction) {
-  // If auction not found, redirect or show an error
+  echo "Auction not found.";
   header("Location: manage-auction.php");
   exit();
 }
@@ -289,6 +289,7 @@ error_reporting(E_ALL);
 </html>
 
 <?php
-include_once("./footer.php");
-ob_end_flush();
+  include_once("./auction-chatbot.php");
+  include_once("./footer.php");
+  ob_end_flush();
 ?>
