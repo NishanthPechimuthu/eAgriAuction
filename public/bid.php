@@ -1,5 +1,7 @@
 <?php
-session_start(); // Start the session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Start the session only if not already started
+}
 ob_start(); // Start output buffering
 
 include("header.php");

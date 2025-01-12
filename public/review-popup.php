@@ -1,6 +1,8 @@
 <?php
 ob_start(); // Start output buffering
-session_start(); // Start the session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Start the session only if not already started
+}
 include("header.php");
 
 // Handle form submission

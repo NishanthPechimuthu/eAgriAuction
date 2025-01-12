@@ -229,7 +229,7 @@ function getAuctionResults($query) {
     </div>
     <div id="chatbot-messages" class="chatbot-messages">
         <div class="chat-message bot">
-            <img src="../images/profiles/chatbot.jpeg" alt="blk">
+            <img src="../images/profiles/bot.webp" alt="blk">
             <div><strong>blk:</strong> How can I help you today?</div>
         </div>
     </div>
@@ -263,7 +263,7 @@ $(document).ready(function () {
         if (!query) {
             chatbotMessages.append(`
                 <div class="chat-message bot">
-                    <img src="../images/profiles/chatbot.jpeg" alt="blk">
+                    <img src="../images/profiles/bot.webp" alt="blk">
                     <div><strong>blk:</strong> Please enter a valid query.</div>
                 </div>
             `);
@@ -308,7 +308,7 @@ response.auctions.forEach(function (auction) {
         } else {
             chatbotMessages.append(`
                 <div class="chat-message bot">
-                    <img src="../images/profiles/chatbot.jpeg" alt="blk">
+                    <img src="../images/profiles/bot.webp" alt="blk">
                     <div><strong>blk:</strong> ${response.message || "No auctions found."}</div>
                 </div>
             `);
@@ -316,7 +316,7 @@ response.auctions.forEach(function (auction) {
     } else {
         chatbotMessages.append(`
             <div class="chat-message bot">
-                <img src="../images/profiles/chatbot.jpeg" alt="blk">
+                <img src="../images/profiles/bot.webp" alt="blk">
                 <div><strong>blk:</strong> ${response.message}</div>
             </div>
         `);
@@ -327,7 +327,7 @@ response.auctions.forEach(function (auction) {
             error: function (xhr, status, error) {
                 chatbotMessages.append(`
                     <div class="chat-message bot">
-                        <img src="../images/profiles/chatbot.jpeg" alt="blk">
+                        <img src="../images/profiles/bot.webp" alt="blk">
                         <div><strong>blk:</strong> Something went wrong. Please try again.</div>
                     </div>
                 `);

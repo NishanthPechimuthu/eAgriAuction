@@ -8,7 +8,7 @@ include("navbar.php");
 isAuthenticated();
 
 // Retrieve user ID from the session
-$user_id = $_SESSION['user_id']; // Assuming 'user_id' is stored in the session
+$user_id = $_SESSION['userId']; // Assuming 'user_id' is stored in the session
 $auctions = getUsersAuctions();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

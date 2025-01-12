@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-5">
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-cogs me-1"></i> Manage Heroes
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <td><?= htmlspecialchars($hero['heroTitle']) ?></td>
                                 <td><?= htmlspecialchars($hero['heroMessage']) ?></td>
                                 <td>
-                              <?= htmlspecialchars($hero['heroImage']) ?>      <img src="../images/heroes/<?= htmlspecialchars($hero['heroImg']) ?>" alt="Hero Image" class="rounded-1 border border-dark" width="50" height="50">
+                                  <img src="../images/heroes/<?= htmlspecialchars($hero['heroImg']) ?>" alt="Hero Image" class="rounded-1 border border-dark" width="50" height="50">
                                 </td>
                                 <td>
                                     <p class="badge rounded-pill <?= $hero['heroStatus'] === 'activate' ? 'bg-success text-white' : ($hero['heroStatus'] === 'deactivate' ? 'bg-warning text-dark' : 'bg-danger text-white') ?> m-0">

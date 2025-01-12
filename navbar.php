@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <?php include_once("./assets/link.html"); ?>
-  
 </head>
 <body class="bg-light">
 
@@ -30,12 +29,16 @@
         <li class="nav-item">
           <a class="nav-link" href="./moments.php">Moments</a>
         </li>
+      </ul>
+      <!-- Align Login and Register buttons to the right -->
+      <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <a class="nav-link btn btn-primary text-white m-1 fw-bold" href="./public/login.php">Login</a>
         </li>
         <li class="nav-item">
           <a class="nav-link btn btn-warning text-dark m-1 fw-bold" href="./public/register.php">Register</a>
         </li>
+      </ul>
     </div>
   </nav>
 

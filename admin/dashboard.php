@@ -173,7 +173,7 @@ $users = getAllUsers();
        <?php include("bid-chart.php"); ?>
      </div>
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-12">
           <div class="card mb-4">
           <div class="card-header">
               <i class="fas fa-user  me-1"></i>

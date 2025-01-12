@@ -418,6 +418,51 @@ function deleteAuction($auction_id) {
 }
 
 // Delete a review (mark as suspended)
+function deleteHero($hero_id) {
+    global $pdo;
+
+    // Check if the review exists
+    $stmt = $pdo->prepare("SELECT * FROM heroes WHERE heroId = :heroId");
+    $stmt->execute(['heroId' => $hero_id]);
+    $hero = $stmt->fetch();
+
+    if ($hero) {
+        // Now, update the review status to 'suspend'
+        $deleteHeroStmt = $pdo->prepare("UPDATE heroes SET heroStatus = 'suspend' WHERE heroId = :heroId");
+        $deleteHeroStmt->execute(['heroId' => $hero_id]);
+
+        // Optionally, check if update was successful
+        if ($deleteHeroStmt->rowCount() > 0) {
+            echo '
+            <p class="alert alert-success alert-dismissible fade show d-flex align-items-center" 
+                   role="alert"  data-bs-dismiss="alert" 
+                          aria-label="Close" 
+                   style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Hero suspended successfully.
+            </p>
+            ';
+        } else {
+            echo '
+            <p class="alert alert-warning alert-dismissible fade show d-flex align-items-center" 
+                   role="alert"  data-bs-dismiss="alert" 
+                          aria-label="Close" 
+                   style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+              Failed to suspend hero.
+            </p>
+            ';
+        }
+    } else {
+        echo '
+        <p class="alert alert-danger alert-dismissible fade show d-flex align-items-center" 
+               role="alert"  data-bs-dismiss="alert" 
+                      aria-label="Close" 
+               style="white-space:nowrap; max-width: 100%; overflow-y: auto;">
+          hero not found.
+        </p>
+        ';
+    }
+}
+// Delete a review (mark as suspended)
 function deleteReview($review_id) {
     global $pdo;
 
@@ -720,10 +765,26 @@ function createUpiRequest($upi_id, $amount, $payee_name) {
 
 function getHighestBidder($auction_id) {
     global $pdo;
-    $stmt = $pdo->prepare("SELECT bidUserId FROM bids WHERE bidAuctionId = :auction_id ORDER BY bidAmount DESC LIMIT 1");
-    $stmt->bindValue(':auction_id', $auction_id, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+
+    try {
+        // Prepare the SQL statement to find the highest bidder
+        $stmt = $pdo->prepare("
+            SELECT bidUserId 
+            FROM bids 
+            WHERE bidAuctionId = :auction_id 
+            ORDER BY bidAmount DESC 
+            LIMIT 1
+        ");
+        $stmt->bindValue(':auction_id', $auction_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Fetch the highest bidder or return an empty array
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: ["bidUserId"=>0];
+    } catch (PDOException $e) {
+        // Handle any errors gracefully
+        error_log("Database error in getHighestBidder: " . $e->getMessage());
+        return [];
+    }
 }
 
 // Get user old password

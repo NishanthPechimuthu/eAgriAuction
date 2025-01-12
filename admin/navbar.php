@@ -34,6 +34,17 @@
             <a class="dropdown-item" href="./manage-bid.php">Manage Bids</a>
           </div>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            CMS
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="./add-hero.php">Add Hero</a>
+            <a class="dropdown-item" href="./manage-hero.php">Manage Heroes</a>
+            <a class="dropdown-item" href="./manage-moment.php">Manage Moments</a>
+            <a class="dropdown-item" href="./manage-review.php">Manage Reviews</a>
+          </div>
+        </li>
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
